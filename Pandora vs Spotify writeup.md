@@ -86,9 +86,9 @@ For analysis, I have chose to first find the ratio between the times for each mu
 | 11 (R) |  | 2.66 | 1.38 | 0.35 |
 | 12 (K) |  | 2.21 | 0.29 | 0.35 |
 
-From here, I averaged the ratios for each task.
+From here, I averaged the ratios for each task. These numbers are the the Spotify times divided by the Pandora times. So the numbers signify Pandora is x times faster, and if the number is below one, then Pandora is 1/x times slower. 
 
-| Subject #1 | Liking a Song Spotify/Pandora | Making a Station Spotify/Pandora | Play Beach Boys Spotify/Pandora | Follow Person/Band Spotify/Pandora |
+| Subject # | Liking a Song Spotify/Pandora | Making a Station Spotify/Pandora | Play Beach Boys Spotify/Pandora | Follow Person/Band Spotify/Pandora |
 |------------|-------------------------------|----------------------------------|---------------------------------|------------------------------------|
 | Averages | 18.9 | 13.94 | 3.37 | 0.66 |
 
@@ -99,7 +99,7 @@ Having observed these trials, and looking at the two sites, these numbers are no
 # Usability Metrics
 
 ## Learnability
-About half of our test users had no experience with on or both music streaming websites, and even some of those who had used them before, so went through a similar process of re-learning. 
+About half of our test users had no experience with one or both music streaming websites, and even some of those who had experience, hadn't used them for a long time, so they went through a similar process of re-learning. 
 
 Users found tasks in Pandora very simple. There is a very obvious search bar which both plays an artist and creates a station simultaneously. The like and dislike buttons are obvious, and the songs are randomized, so there is little need to continue to move around the site after music has started playing.
 
@@ -109,24 +109,24 @@ Spotify, on the other hand, is less intuitive. The biggest issue is one that is 
 
 ![I Even Had To Zoom Out](http://puu.sh/klVjG/796114d5e0.png)
 
-Once you manage to find the web player, most functionality in Spotify is fairly simple, but there are quite a few more buttons than Pandora, some of which do different things whether you click them once or twice. If you have used the site before, this may not be an issue, but from a learnability standpoint, Pandora is the clear winner.
+Once you manage to find the web player, most functionality in Spotify is fairly simple, but there are quite a few more buttons than Pandora, some of which do different things whether you click them once or twice. If you have used the site before, this may not be an issue, but from a learnability standpoint, Pandora is the clear winner. Also, it is notable that the like and dislike buttons are only available in Spotify's radio feature, not normal music playback, which could possibly cause some confusion. 
 
 ![So Many Buttons](http://puu.sh/klVAW/d591e3b5a7.jpg)  
 
 ## Efficiency 
 
-Pandora does its job very well, and is extremely efficient. There is really only one main page on Pandora, which I pictured earlier, which doesn't leave a lot of room for users to be confused. The one task in which Pandora performed worse is following a person/artist. This is one of the few things in Pandora which requires navigating to a separate page. In spotify there is a very obvious "Follow" link whereas in Pandora, it can be accessed from either the "Music Feed" page, "Find People" section, or though a redirect from the "My Profile", "Following" tab. Many subjects in our tests tried to use the "Search Friends" box on the profile screen to find someone even though they were not logged in on Facebook. I do not think this shortcoming for Pandora is significant because following a friend is not a main focus of the site.
+Pandora does its job very well, and is extremely efficient. There is really only one main page on Pandora, which I pictured earlier. This doesn't leave a lot of room for users to be confused. The one task in which Pandora performed worse is following a person/artist. This is one of the few things in Pandora which requires navigating to a separate page. In spotify there is a very obvious "Follow" link, whereas in Pandora, it can be accessed from either the "Music Feed" page, "Find People" section, or though a redirect from the "My Profile", "Following" tab. Many subjects in our tests tried to use the "Search Friends" box on the profile screen to find someone even though they were not logged in on Facebook. I do not think this shortcoming for Pandora is significant because following a friend is not a main focus of the site.
 
 ![](http://puu.sh/klXRM/72720df952.jpg)
 
-Where Pandora does one thing very well, Spotify tries to have many focuses which makes it quite a bit more cumbersome, but also allows for more functionality. While Pandora is for creating radio stations which shuffle based on an artist, Spotify is focused on playing specific tracks and making playlists. This is more akin to the interface of Itunes, and is not as easily streamlined as shuffling internet radio. However, from my observations and the data we collected, I think Spotify could definitely do a better job making its interface intuitive.
+Where Pandora does one task very well, Spotify tries to have many focuses, making it quite a bit more cumbersome, but also allows for more functionality. While Pandora is for creating radio stations which shuffle based on an artist, Spotify is focused on playing specific tracks and making playlists. Spotify is more akin to the interface of Itunes, and is not as easily streamlined as shuffling internet radio. However, from my observations and the data we collected, I think Spotify could definitely do a better job making its interface intuitive.
 
-Also, the playlist system is a little strange. I think it is because the site relies on use of both buttons for the main sections, which are present on every screen, and tabs which change depending what page you are on. I think that it feels odd because if you are unfamiliar with the site, you may need to switch around between pages for the tab you are looking for. There is nothing really about the "Your Music" tab that implies playlists, you have to click on it, then have to presence to see the "play lists" tab. Perhaps this is more of a learnability issue than an efficiency issue, but I think even if you have experience using the site, this system could make for a confusing workflow. 
+Also, the playlist system is a little strange. I think it is because the site relies on use of both buttons for the main sections, which are present on every screen, and tabs which change depending what page you are on. It feels odd because if you are unfamiliar with the site, you may need to switch around between pages for the tab you are looking. There is nothing really about the "Your Music" tab that implies playlists, you have to click on it, then have the presence to see the "playlists" tab. Perhaps this is more of a learnability issue than an efficiency issue, but I think even if you have experience using the site, this system could make for a confusing workflow. 
 
 ![Changing tabs](http://puu.sh/klX45/4ac1a543c0.jpg)
 
 ## Satisfaction
 
-Despite Spotify's flaws, about half of our our test users still prefer the service. This is simply due to the fact that they are tailored for different purposes. One of my fiends works for Pandora and I jokingly asked her if it's blasphemy to play Spotify in Pandora offices. She replied saying of course not, they play Spotify all the time and at Spotify offices they likely play Pandora. One service is good if you are perhaps at a party or event where you do not have time to dj, and just want constant music playing. The other id good for picking specific songs and fills a previous gap in the music software field for users who want to hear their favorite band, but do not want to pay per song.
+Despite Spotify's flaws, about half of our our test users still prefer the service. This is simply due to the fact that they are tailored for different purposes. One of my friends works for Pandora and I jokingly asked her if it's blasphemy to play Spotify in Pandora offices. She replied saying of course not, they play Spotify all the time and at Spotify offices they likely play Pandora. One service is good if you are perhaps at a party or event where you do not have time to dj, and just want constant music playing. The other is good for picking specific songs and fills a previous gap in the music software field for users who want to hear their favorite band, but do not want to pay per song.
 
 Users of Pandora like it because it's simple to use and shows them new music. Users of Spotify like being able to play specific tracks, its aesthetics, and its added features. However, having said this, I believe Spotify could do well to improve its learnability, and make the link to the web player more obvious. 

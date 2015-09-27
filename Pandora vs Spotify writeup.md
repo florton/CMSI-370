@@ -86,7 +86,7 @@ For analysis, I have chose to first find the ratio between the times for each mu
 | 11 (R) |  | 2.66 | 1.38 | 0.35 |
 | 12 (K) |  | 2.21 | 0.29 | 0.35 |
 
-From here, I averaged the ratios for each task. These numbers are the the Spotify times divided by the Pandora times. So the numbers signify Pandora is x times faster, and if the number is below one, then Pandora is 1/x times slower. 
+From here, I averaged the ratios for each task. These numbers are the Spotify times divided by the Pandora times. So the numbers signify Pandora is x times faster, and if the number is below one, then Pandora is 1/x times slower. 
 
 | Subject # | Liking a Song Spotify/Pandora | Making a Station Spotify/Pandora | Play Beach Boys Spotify/Pandora | Follow Person/Band Spotify/Pandora |
 |------------|-------------------------------|----------------------------------|---------------------------------|------------------------------------|

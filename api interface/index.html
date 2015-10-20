@@ -1,0 +1,41 @@
+ <!DOCTYPE html>
+<html>
+<meta charset='utf-8'>
+<head>
+<title>Steams API</title>
+</head>
+<body>
+
+<h1>This is a Heading</h1>
+<p> Id for testing : 76561197972495328 </p>
+
+<form method="get" id="idform">
+  <div>
+    <input type="text">
+  </div>
+</form>
+<button form="idform" value="Submit">Submit</button>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    
+</body>
+</html> 
+
+<script>
+   
+    $(document).ready(function(){
+        $("button").click(function(){
+            var sid = document.getElementById("idform").elements[0].value;
+            $.getJSON("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=FADC45FD3C92FDFFDBCDA01F2A4149A9&steamids=" + sid, function(result){
+                $.each(result, function(i, field){
+                    console.log(i+field);
+                    $("div").append(field + " ");
+                });
+            });
+        });
+    });
+    
+
+    //var id  = "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=FADC45FD3C92FDFFDBCDA01F2A4149A9&vanityurl=" + vid;
+    //var src = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=FADC45FD3C92FDFFDBCDA01F2A4149A9&steamids=" + sid;
+</script>

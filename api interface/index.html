@@ -29,7 +29,7 @@
     function submit(){
         $(document).ready(function(){
             var sid = document.getElementById("idform").elements[0].value;
-            $.getJSON("http://localhost:3000/", function(result){
+            $.getJSON("http://localhost:3000//?sid=", {sid: sid}, function(result){
                 console.log(result);
                 console.log(result.response.players[0]);
                 for(i in result.response.players[0]){

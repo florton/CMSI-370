@@ -7,7 +7,7 @@
 <body>
 
 <h1>Steam User Lookup</h1>
-<p> Id for testing : 76561197972495328 </p>
+<p> Ids for testing : 76561197972495328 , 76561198023545004  </p>
 
 <form method="get" id="idform">
   <div>
@@ -25,16 +25,29 @@
 
 <script>
   
-    
+    function newImage(src, width, height) {
+				var img = document.createElement("img");
+				img.src = src;
+				img.width = width;
+				img.height = height;
+				img.hspace=40;
+				img.vspace=15;
+				return img;
+    }
+            
     function submit(){
         $(document).ready(function(){
+            document.getElementById("main").innerHTML = "";
             var sid = document.getElementById("idform").elements[0].value;
             $.getJSON("http://localhost:3000//?sid=", {sid: sid}, function(result){
                 console.log(result);
                 console.log(result.response.players[0]);
+                document.getElementById("main").appendChild(newImage(""+result.response.players[0].avatarfull,200,200));
+                document.getElementById("main").appendChild(document.createElement("br"));
                 for(i in result.response.players[0]){
                     document.getElementById("main").appendChild(document.createTextNode(i + " : " + result.response.players[0][i]));
                     document.getElementById("main").appendChild(document.createElement("br"));
+                    
                 }
             });
         });

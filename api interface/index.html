@@ -62,7 +62,7 @@
         $(document).ready(function(){
             document.getElementById("main").innerHTML = "";
             place('');
-            place("Loading");
+            place("[Loading profile information]");
             var sid = document.getElementById("idform").elements[0].value;
             $.getJSON("http://localhost:3000//?sid=", {sid: sid}, function(result){
                 document.getElementById("main").innerHTML = "";
@@ -96,7 +96,7 @@
                 if(user.timecreated){place("Profile created on : " + processTime(user.timecreated));}
                 
                 var vState = user.communityvisibilitystate;
-                var output = "Profile access is : ";
+                var output = "Profile access : ";
                 if(vState == 1){output += "Private";}
                 else if(vState == 2){output += "Friends only";}
                 else if(vState == 3){output += "Friends of friends";}
@@ -108,11 +108,26 @@
                 
                 if(user.realname){place("Real name : " + user.realname);}
                 
-
-                if(user.locstatecode && user.loccountrycode){place("Lives in : " + user.locstatecode +", "+ user.loccountrycode);}
-                else if(user.loccountrycode){place("Lives in : " + user.loccountrycode);}
+                var country = user.loccountrycode;
+                var state = user.locstatecode;
+                var city = user.loccityid;
                 
-            
+                
+                
+                if(country){
+                    document.getElementById("main").appendChild(document.createTextNode("[Loading location information]"));
+                    $.getJSON("https://raw.githubusercontent.com/Holek/steam-friends-countries/master/data/steam_countries.json", function(result){
+                    country = result[country];
+                    state = country.states[state];
+                    city = state.cities[city];
+                    if(state){state = state.name + ","}else{state = '';}
+                    if(city){city = city.name + ","}else{city = '';}
+                    document.getElementById("main").removeChild(document.getElementById("main").lastChild);
+                    place("Lives in : " + city + " " + state + " " + country.name);
+                    
+                    });
+                }
+
             });
         });
     }

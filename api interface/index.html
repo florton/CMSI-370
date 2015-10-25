@@ -1,40 +1,61 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
-<meta charset='utf-8'>
 <head>
-<title>Steams API</title>
+    <meta charset='utf-8'>
+    <title>Steams API</title>
+    <style>
+    body { width: 960px; margin: 0 auto; }
+    </style>
 </head>
 <body>
+    <h1>Steam User Lookup</h1>
+    <h3>Enter a 17 digit user id or a vanity id</h3>
+    <p>Ids for testing : 76561198025207102 , 76561198023545004, brickobanna,
+    NatKueenCole, gabelogannewell</p>
+    <form id="idform" method="get" name="idform">
+        <div>
+            <input type="text">
+        </div>
+    </form><br>
+    <button onclick="submit();">Submit</button><br>
+    <div id="main"></div>
+    <script src=
+    "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+    </script>
+    <script>
 
-<h1>Steam User Lookup</h1>
-<h3>Enter a 17 digit user id or a vanity id</h3>
-<p> Ids for testing : 76561198025207102 , 76561198023545004, brickobanna, NatKueenCole  </p>
-
-
-<form method="get" id="idform">
-  <div>
-    <input type="text">
-  </div>
-</form>
-<br><button onclick="submit();">Submit</button></br>
-
-<div id="main"></div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    
-</body>
-</html> 
-
-<script>
-  
     function newImage(src, width, height) {
-				var img = document.createElement("img");
-				img.src = src;
-				img.width = width;
-				img.height = height;
-				img.hspace=40;
-				img.vspace=15;
-				return img;
+                var img = document.createElement("img");
+                img.src = src;
+                img.width = width;
+                img.height = height;
+                img.hspace=0;
+                img.vspace=15;
+                return img;
+    }
+
+    function processTime(timeStamp){
+        var date = new Date(timeStamp*1000);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = date.getFullYear();
+        var month = months[date.getMonth()];
+        var hours = date.getHours();
+        var night = "AM";
+        if(hours == 0 || hours >= 12){
+            night = "PM";
+            if(hours!==12){hours = hours - 12;}
+            if(hours==0){hours = 12;}
+        }
+        hours = "0" + hours;
+        var day = "0" + date.getDate();
+        var minutes = "0" + date.getMinutes();
+        //var seconds = "0" + date.getSeconds();
+        return(month + ' ' + day.substr(-2) + ' ' +year + ' at ' + hours.substr(-2) + ':' + minutes.substr(-2) + ' ' + night);
+    }
+
+    function place(output){
+        document.getElementById("main").appendChild(document.createTextNode(output));
+        document.getElementById("main").appendChild(document.createElement("br"));
     }
             
     function submit(){
@@ -43,20 +64,55 @@
             var sid = document.getElementById("idform").elements[0].value;
             $.getJSON("http://localhost:3000//?sid=", {sid: sid}, function(result){
                 console.log(result);
-                console.log(result.response.players[0]);
-                document.getElementById("main").appendChild(newImage(""+result.response.players[0].avatarfull,200,200));
-                document.getElementById("main").appendChild(document.createElement("br"));
-                for(i in result.response.players[0]){
-                    document.getElementById("main").appendChild(document.createTextNode(i + " : " + result.response.players[0][i]));
-                    document.getElementById("main").appendChild(document.createElement("br"));
-                    
-                }
+                var user = result.response.players[0];
+                
+                document.getElementById("main").appendChild(newImage(""+user.avatarfull,200,200));
+                var name = document.createElement("h2")
+                name.appendChild(document.createTextNode(user.personaname));
+                document.getElementById("main").appendChild(name);
+                
+                var pState = user.personastate;
+                output = "User is: ";
+                if(pState == 0){output += "Offline"; }
+                else if(pState == 1){output += "Online";}
+                else if(pState == 2){output += "Busy";}
+                else if(pState == 3){output += "Away"; }
+                else if(pState == 4){output += "Snooze"; }
+                else if(pState == 5){output += "Looking to trade"; }
+                else if(pState == 5){output += "Looking to play"; }
+                place(output);
+                
+                if(pState == 0){place("Last online : " + processTime(user.lastlogoff));}
+                
+                if(user.gameextrainfo){place("Currently playing : " + user.gameextrainfo)};
+                
+                place('');
+                
+                place("Steam id is : " + user.steamid);
+                
+                if(user.timecreated){place("Profile created on : " + processTime(user.timecreated));}
+                
+                var vState = user.communityvisibilitystate;
+                var output = "Profile is access is : ";
+                if(vState == 1){output += "Private";}
+                else if(vState == 2){output += "Friends only";}
+                else if(vState == 3){output += "Friends of friends";}
+                else if(vState == 4){output += "Users only"; }
+                else if(vState == 5){output += "Public"; }
+                place(output);              
+                
+                place('');
+                
+                if(user.realname){place("Real name : " + user.realname);}
+                
+
+                if(user.locstatecode && user.loccountrycode){place("Lives in : " + user.locstatecode +", "+ user.loccountrycode);}
+                else if(user.loccountrycode){place("Lives in : " + user.loccountrycode);}
+                
+            
             });
         });
     }
-    
-    
-
-    //var id  = "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=FADC45FD3C92FDFFDBCDA01F2A4149A9&vanityurl=" + vid;
-    //var src = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=FADC45FD3C92FDFFDBCDA01F2A4149A9&steamids=" + sid;
-</script>
+    </script>
+</body>
+</html>

@@ -25,13 +25,13 @@
     <script>
 
     function newImage(src, width, height) {
-                var img = document.createElement("img");
-                img.src = src;
-                img.width = width;
-                img.height = height;
-                img.hspace=0;
-                img.vspace=15;
-                return img;
+        var img = document.createElement("img");
+        img.src = src;
+        img.width = width;
+        img.height = height;
+        img.hspace=0;
+        img.vspace=15;
+        return img;
     }
 
     function processTime(timeStamp){
@@ -61,8 +61,11 @@
     function submit(){
         $(document).ready(function(){
             document.getElementById("main").innerHTML = "";
+            place('');
+            place("Loading");
             var sid = document.getElementById("idform").elements[0].value;
             $.getJSON("http://localhost:3000//?sid=", {sid: sid}, function(result){
+                document.getElementById("main").innerHTML = "";
                 console.log(result);
                 var user = result.response.players[0];
                 
@@ -93,7 +96,7 @@
                 if(user.timecreated){place("Profile created on : " + processTime(user.timecreated));}
                 
                 var vState = user.communityvisibilitystate;
-                var output = "Profile is access is : ";
+                var output = "Profile access is : ";
                 if(vState == 1){output += "Private";}
                 else if(vState == 2){output += "Friends only";}
                 else if(vState == 3){output += "Friends of friends";}

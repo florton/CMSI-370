@@ -24,11 +24,11 @@
     </script>
     <script>
 
-    function newImage(src, width, height) {
+    function newImage(src) {
         var img = document.createElement("img");
         img.src = src;
-        img.width = width;
-        img.height = height;
+        //img.width = width;
+        //img.height = height;
         img.hspace=0;
         img.vspace=15;
         return img;
@@ -63,12 +63,12 @@
             place('');
             place("[Loading profile information]");
             var sid = document.getElementById("idform").elements[0].value;
-            $.getJSON("http://localhost:3000//?sid=", {sid: sid}, function(result){
+            $.getJSON("http://localhost:3000//?sid=", {sid: sid+"1"}, function(result){
                 document.getElementById("main").innerHTML = "";
                 console.log(result);
                 var user = result.response.players[0];
                 
-                document.getElementById("main").appendChild(newImage(""+user.avatarfull,200,200));
+                document.getElementById("main").appendChild(newImage(""+user.avatarfull));
                 var name = document.createElement("h2")
                 name.appendChild(document.createTextNode(user.personaname));
                 document.getElementById("main").appendChild(name);
@@ -114,18 +114,38 @@
                 
                 
                 if(country){
-                    document.getElementById("main").appendChild(document.createTextNode("[Loading location information]"));
+                    var load = document.createTextNode("[Loading location information]");
+                    load.id = 'loading';
+                    document.getElementById("main").appendChild(load);                    
                     $.getJSON("https://raw.githubusercontent.com/Holek/steam-friends-countries/master/data/steam_countries.json", function(result){
                     country = result[country];
                     state = country.states[state];
                     city = state.cities[city];
                     if(state){state = state.name + ","}else{state = '';}
                     if(city){city = city.name + ","}else{city = '';}
-                    document.getElementById("main").removeChild(document.getElementById("main").lastChild);
+                    document.getElementById("main").removeChild(document.getElementById("loading"));
                     place("Lives in : " + city + " " + state + " " + country.name);
                     
                     });
                 }
+                
+                
+                place("");
+                document.getElementById("main").appendChild(document.createTextNode("[Loading recent playtime information]"));
+                
+                $.getJSON("http://localhost:3000//?sid=", {sid: sid+"2"}, function(result){
+                    console.log(result);
+                    document.getElementById("main").removeChild(document.getElementById("main").lastChild);
+                    var games = result.response.games;
+                    for(var i=0; i<games.length; i++){
+                        place(games[i].name);
+                        document.getElementById("main").appendChild(newImage("http://media.steampowered.com/steamcommunity/public/images/apps/"+ games[i].appid + games[i].img_logo_url));                        
+                        place("Last two weeks played : " + games[i].playtime_2weeks/60 + "hours" );
+                        place("Total playtime : " + games[i].playtime_2weeks/60 + "hours");
+                    }
+                    
+                });
+                
 
             });
         });

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8'>
-    <title>Steams API</title>
+    <title>Steam User Lookup</title>
     <style>
     body { width: 960px; margin: 0 auto; }
     </style>
@@ -10,7 +10,7 @@
 <body>
     <h1>Steam User Lookup</h1>
     <h3>Enter a 17 digit user id or a vanity id</h3>
-    <p>Ids for testing : 76561198025207102 , 76561198023545004, brickobanna,
+    <p>Ids for testing : 76561198025207102, 76561198040928520, 76561198023545004, brickobanna,
     NatKueenCole, gabelogannewell</p>
     <form id="idform" method="get" name="idform">
         <div>
@@ -41,16 +41,15 @@
         var month = months[date.getMonth()];
         var hours = date.getHours();
         var night = "AM";
-        if(hours == 0 || hours >= 12){
+        if(hours >= 12){
             night = "PM";
-            if(hours!==12){hours = hours - 12;}
-            if(hours==0){hours = 12;}
+            if(hours!==12){hours = hours - 12;}    
         }
-        hours = "0" + hours;
+        if(hours==0){hours = 12;}
         var day = "0" + date.getDate();
         var minutes = "0" + date.getMinutes();
         //var seconds = "0" + date.getSeconds();
-        return(month + ' ' + day.substr(-2) + ' ' +year + ' at ' + hours.substr(-2) + ':' + minutes.substr(-2) + ' ' + night);
+        return(month + ' ' + day.substr(-2) + ' ' +year + ' at ' + hours + ':' + minutes.substr(-2) + ' ' + night);
     }
 
     function place(output){
@@ -91,7 +90,7 @@
                 
                 place('');
                 
-                place("Steam id is : " + user.steamid);
+                place("Steam id: " + user.steamid);
                 
                 if(user.timecreated){place("Profile created on : " + processTime(user.timecreated));}
                 

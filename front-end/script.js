@@ -147,40 +147,47 @@
                 else if(vState == 4){output += "Users only"; }
                 else if(vState == 5){output += "Public"; }
                 place(output, "profileInfo");
-                document.getElementById("profileInfo").innerHTML+="Steam Community Profile Page".link("http://steamcommunity.com/profiles/"+sid);
+                var idUrl = "id/"
+                if(/[\d]{17}/.test(sid)){idUrl = "profiles/"}
+                document.getElementById("profileInfo").innerHTML+="Steam Community Profile Page".link("http://steamcommunity.com/"+idUrl+sid);
                 place('', "profileInfo")
                 place('', "profileInfo")
                 
                 //gameStats
-                
-                $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:2}, function(result){
-                    console.log(result);
-                    var userGames = result.response;
+                if(vState!==1){
+                    $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:2}, function(result){
+                        console.log(result);
+                        var userGames = result.response;
 
-                    if(userGames.game_count){place("Games owned : " + userGames.game_count, "gameStats");}
-                    
-                    var totalPlaytime = 0;
-                    var playedGames = 0;
-                    for(i in userGames.games){
-                        var playtime = userGames.games[i].playtime_forever;
-                        if(userGames.games[i].appid == 570){console.log(playtime);}
-                        totalPlaytime += playtime;
-                        if(playtime > 10){playedGames+=1;}
+                        if(userGames.game_count){place("Games owned : " + userGames.game_count, "gameStats");}
                         
-                    }
-                    var totalPlayedPercent = (playedGames/userGames.game_count)*100;
-                    totalPlayedPercent = Math.round(totalPlayedPercent * 10) / 10;
-                    var averagePlaytime = totalPlaytime/playedGames;
-                    averagePlaytime = Math.round(averagePlaytime * 10) / 10;
-                    
-                    console.log(totalPlaytime)
-                    console.log(averagePlaytime)
-                    place("Total time in-game : " + processPlaytime(totalPlaytime), "gameStats");
-                    place("Played : " + totalPlayedPercent + "% of owned games (" + playedGames + '/' + userGames.game_count + ')', "gameStats");
-                    place("Average playtime per game : " + processPlaytime(averagePlaytime), "gameStats");
+                        var totalPlaytime = 0;
+                        var playedGames = 0;
+                        for(i in userGames.games){
+                            var playtime = userGames.games[i].playtime_forever;
+                            if(userGames.games[i].appid == 570){console.log(playtime);}
+                            totalPlaytime += playtime;
+                            if(playtime > 10){playedGames+=1;}
+                            
+                        }
+                        var totalPlayedPercent = (playedGames/userGames.game_count)*100;
+                        totalPlayedPercent = Math.round(totalPlayedPercent * 10) / 10;
+                        var averagePlaytime = totalPlaytime/playedGames;
+                        averagePlaytime = Math.round(averagePlaytime * 10) / 10;
+                        
+                        console.log(totalPlaytime)
+                        console.log(averagePlaytime)
+                        place("Total time in-game : " + processPlaytime(totalPlaytime), "gameStats");
+                        place("Played : " + totalPlayedPercent + "% of owned games (" + playedGames + '/' + userGames.game_count + ')', "gameStats");
+                        place("Average playtime per game : " + processPlaytime(averagePlaytime), "gameStats");
+                        place('', "gameStats"); 
+                    });
+                }else{
+                    place('No public game statistics', "gameStats"); 
                     place('', "gameStats"); 
-                });
-                
+                    place('', "gameStats"); 
+                    place('', "gameStats"); 
+                }
                 //recentGames
                 
                 //place("");

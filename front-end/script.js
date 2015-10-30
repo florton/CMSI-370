@@ -4,7 +4,6 @@
         img.src = src;
         img.hspace=0;
         img.vspace=0;
-        //img.style = "border:5px solid black;";
         return img;
     }
 
@@ -59,8 +58,7 @@
         document.getElementById(element).appendChild(document.createElement("br"));
     }
             
-    function submit(){
-        
+    function submit(){       
         $('#all').show();
         $(document).ready(function(){
             document.getElementById("main").innerHTML = "";
@@ -71,6 +69,8 @@
             document.getElementById("recentGames").innerHTML = "";
 
             var sid = document.getElementById("idform").elements[0].value;
+            //var vsid = sid.match(/[\d]{17}/);
+            //if (vsid!==null){sid = vsid[0];}
             $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:1}, function(result){
                 document.getElementById("main").innerHTML = "";
                 console.log(result);
@@ -130,6 +130,9 @@
                         //document.getElementById("main").removeChild(document.getElementById("userInfo").lastChild);
                         place("Lives in : " + city + " " + state + " " + country.name, "userInfo");
                     }
+                    if(user.steamid == 76561198023545004){
+                        document.getElementById("userInfo").innerHTML += "<mark>★ ☆ Creator of this webapp!☆ ★ </mark>";
+                    }
                 });
                 
                 //profileInfo
@@ -147,9 +150,7 @@
                 else if(vState == 4){output += "Users only"; }
                 else if(vState == 5){output += "Public"; }
                 place(output, "profileInfo");
-                var idUrl = "id/"
-                if(/[\d]{17}/.test(sid)){idUrl = "profiles/"}
-                document.getElementById("profileInfo").innerHTML+="Steam Community Profile Page".link("http://steamcommunity.com/"+idUrl+sid);
+                document.getElementById("profileInfo").innerHTML+="Steam Community Profile Page".link("http://steamcommunity.com/profiles/"+user.steamid);
                 place('', "profileInfo")
                 place('', "profileInfo")
                 
@@ -190,18 +191,17 @@
                 }
                 //recentGames
                 
-                //place("");
-                //var loader = document.createTextNode("[Loading recent playtime information]");
-                //document.getElementById("main").appendChild(loader);
-                
                 $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:3}, function(result){
                     console.log(result);
                     //loader.parentNode.removeChild(loader);
                     if (result.response.games){                        
                         var games = result.response.games;
                         for(var i=0; i<games.length; i++){
+                            if(games[i].name == undefined){continue;}                     
                             var src = "http://media.steampowered.com/steamcommunity/public/images/apps/"+ games[i].appid + "/" + games[i].img_logo_url + ".jpg";
-                            place(games[i].name, "recentGames");
+                            var name = document.createElement("h4")
+                            name.appendChild(document.createTextNode(games[i].name));
+                            document.getElementById("recentGames").appendChild(name)
                             document.getElementById("recentGames").appendChild(newImage(src));                        
                             place("", "recentGames");
                             place("Last two weeks played : " + processPlaytime(games[i].playtime_2weeks), "recentGames");

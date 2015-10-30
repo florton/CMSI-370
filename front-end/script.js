@@ -1,34 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <title>Steam User Lookup</title>
-    <style>
-    body { width: 960px; margin: 0 auto; }
-    </style>
-</head>
-<body>
-    <h1>Steam User Lookup</h1>
-    <h3>Enter a 17 digit user id or a vanity id</h3>
-    <p>Ids for testing : 76561198025207102, 76561198040928520, 76561198023545004, brickobanna,
-    NatKueenCole, gabelogannewell</p>
-    <form id="idform" method="get" name="idform">
-        <div>
-            <input type="text">
-        </div>
-    </form><br>
-    <button onclick="submit();">Submit</button><br>
-    <div id="main"></div>
-    <script src=
-    "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
-    </script>
-    <script>
-  
+
     function newImage(src) {
         var img = document.createElement("img");
         img.src = src;
-        //img.width = width;
-        //img.height = height;
         img.hspace=0;
         img.vspace=15;
         return img;
@@ -48,7 +21,6 @@
         if(hours==0){hours = 12;}
         var day = "0" + date.getDate();
         var minutes = "0" + date.getMinutes();
-        //var seconds = "0" + date.getSeconds();
         return(month + ' ' + day.substr(-2) + ' ' +year + ' at ' + hours + ':' + minutes.substr(-2) + ' ' + night);
     }
 
@@ -64,7 +36,7 @@
             place('');
             place("[Loading profile information]");
             var sid = document.getElementById("idform").elements[0].value;
-            $.getJSON("http://localhost:3000//?sid=", {sid: sid+"1"}, function(result){
+            $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:1}, function(result){
                 document.getElementById("main").innerHTML = "";
                 console.log(result);
                 var user = result.response.players[0];
@@ -130,27 +102,32 @@
                         place("Lives in : " + city + " " + state + " " + country.name);
                     }
 
-                    
                     place("");
-                    place("Recently Played Games:");
-                    place("");
-                    document.getElementById("main").appendChild(document.createTextNode("[Loading recent playtime information]"));
+                    var loader = document.createTextNode("[Loading recent playtime information]");
+                    document.getElementById("main").appendChild(loader);
                     
-                    $.getJSON("http://localhost:3000//?sid=", {sid: sid+"2"}, function(result){
+                    $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:2}, function(result){
                         console.log(result);
-                        document.getElementById("main").removeChild(document.getElementById("main").lastChild);
-                        var games = result.response.games;
-                        for(var i=0; i<games.length; i++){
-                            var src = "http://media.steampowered.com/steamcommunity/public/images/apps/"+ games[i].appid + "/" + games[i].img_logo_url + ".jpg";
-                            console.log(src);
-                            place(games[i].name);
-                            document.getElementById("main").appendChild(newImage(src));                        
+                        loader.parentNode.removeChild(loader);
+                        if (result.response.games){
+                            
+                            place("Recently Played Games:");
                             place("");
-                            place("Last two weeks played : " + games[i].playtime_2weeks + "minutes" );
-                            place("Total playtime : " + games[i].playtime_2weeks + "minutes");
-                            place('');
+                            
+                            var games = result.response.games;
+                            for(var i=0; i<games.length; i++){
+                                var src = "http://media.steampowered.com/steamcommunity/public/images/apps/"+ games[i].appid + "/" + games[i].img_logo_url + ".jpg";
+                                console.log(src);
+                                place(games[i].name);
+                                document.getElementById("main").appendChild(newImage(src));                        
+                                place("");
+                                place("Last two weeks played : " + games[i].playtime_2weeks + "minutes" );
+                                place("Total playtime : " + games[i].playtime_2weeks + "minutes");
+                                place('');
+                            }
+                        }else{
+                            place("No recently played games")
                         }
-                        
                     });
                 
                 });
@@ -159,6 +136,3 @@
             });
         });
     }
-    </script>
-</body>
-</html>

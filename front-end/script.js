@@ -3,7 +3,8 @@
         var img = document.createElement("img");
         img.src = src;
         img.hspace=0;
-        img.vspace=15;
+        img.vspace=0;
+        //img.style = "border:5px solid black;";
         return img;
     }
 
@@ -52,53 +53,91 @@
         
     }
 
-    function place(output){
-        
-        document.getElementById("main").appendChild(document.createTextNode(output));
-        document.getElementById("main").appendChild(document.createElement("br"));
+    function place(output, element){
+        if(element == undefined ){element = "main"}
+        document.getElementById(element).appendChild(document.createTextNode(output));
+        document.getElementById(element).appendChild(document.createElement("br"));
     }
             
     function submit(){
+        
+        $('#all').show();
         $(document).ready(function(){
             document.getElementById("main").innerHTML = "";
-            place('');
-            place("[Loading profile information]");
+            document.getElementById("userInfo").innerHTML = "";
+            document.getElementById("profilePicture").innerHTML = "";
+            document.getElementById("profileInfo").innerHTML = "";
+            document.getElementById("gameStats").innerHTML = "";
+            document.getElementById("recentGames").innerHTML = "";
+
             var sid = document.getElementById("idform").elements[0].value;
             $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:1}, function(result){
                 document.getElementById("main").innerHTML = "";
                 console.log(result);
                 var user = result.response.players[0];
                 
-                document.getElementById("main").appendChild(newImage(""+user.avatarfull));
-                var name = document.createElement("h2")
+                //profilePicture
+                
+                document.getElementById("profilePicture").appendChild(newImage(""+user.avatarfull));
+                
+                //userInfo
+                
+                var name = document.createElement("h3")
                 name.appendChild(document.createTextNode(user.personaname));
-                document.getElementById("main").appendChild(name);
+                document.getElementById("userInfo").appendChild(name);
                 
                 var pState = user.personastate;
-                output = "User is: ";
-                if(pState == 0){output += "Offline"; }
-                else if(pState == 1){output += "Online";}
+                var output = "User is: ";
+                var state = "info";
+                if(pState == 0){
+                    output += "Offline"; 
+                    state = "danger";
+                }
+                else if(pState == 1){
+                    output += "Online";
+                    state = "success";
+                }
                 else if(pState == 2){output += "Busy";}
                 else if(pState == 3){output += "Away"; }
                 else if(pState == 4){output += "Snooze"; }
                 else if(pState == 5){output += "Looking to trade"; }
                 else if(pState == 5){output += "Looking to play"; }
-                place(output);
+                document.getElementById("userInfo").innerHTML += "<h3><span class='label label-"+state+"'>"+output+"</span><br></h3>"
                 
-                if(pState == 0){place("Last online : " + processTime(user.lastlogoff));}
-                
-                if(user.gameextrainfo){
-                    place("Currently playing : " + user.gameextrainfo);
+                if(pState == 0){
+                    place("Last online: " + processTime(user.lastlogoff), "userInfo");
                 }else{
-                    place("Not currently in game");
+                    if(user.gameextrainfo){
+                        place("Currently playing : " + user.gameextrainfo, "userInfo");
+                    }else{
+                        place("Not currently in game", "userInfo");
+                    }
                 }
                 
+                if(user.realname){place("Real name : " + user.realname, "userInfo");}
+                var country = user.loccountrycode;
+                var state = user.locstatecode;
+                var city = user.loccityid;
                 
-                place('');
+                $.getJSON("https://raw.githubusercontent.com/Holek/steam-friends-countries/master/data/steam_countries.json", function(result){
+                    if(country){
+                        //document.getElementById("userInfo").appendChild(document.createTextNode("[Loading location information]"));
+                        country = result[country];
+                        state = country.states[state];
+                        city = state.cities[city];
+                        if(state){state = state.name + ","}else{state = '';}
+                        if(city){city = city.name + ","}else{city = '';}
+                        //document.getElementById("main").removeChild(document.getElementById("userInfo").lastChild);
+                        place("Lives in : " + city + " " + state + " " + country.name, "userInfo");
+                    }
+                });
                 
-                place("Steam id: " + user.steamid);
+                //profileInfo
                 
-                if(user.timecreated){place("Profile created on : " + processTime(user.timecreated));}
+                place('');                
+                place("Steam id: " + user.steamid, "profileInfo");
+                
+                if(user.timecreated){place("Profile created on: " + processTime(user.timecreated), "profileInfo");}
                 
                 var vState = user.communityvisibilitystate;
                 var output = "Profile access : ";
@@ -107,15 +146,18 @@
                 else if(vState == 3){output += "Friends of friends";}
                 else if(vState == 4){output += "Users only"; }
                 else if(vState == 5){output += "Public"; }
-                place(output);
+                place(output, "profileInfo");
+                document.getElementById("profileInfo").innerHTML+="Steam Community Profile Page".link("http://steamcommunity.com/profiles/"+sid);
+                place('', "profileInfo")
+                place('', "profileInfo")
                 
-                document.getElementById("main").innerHTML+=("Steam Community Profile Page".link("http://steamcommunity.com/profiles/"+sid));
-                place("");
+                //gameStats
                 
                 $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:2}, function(result){
                     console.log(result);
                     var userGames = result.response;
-                    if(userGames.game_count){place("Games owned : " + userGames.game_count);}
+
+                    if(userGames.game_count){place("Games owned : " + userGames.game_count, "gameStats");}
                     
                     var totalPlaytime = 0;
                     var playedGames = 0;
@@ -133,65 +175,38 @@
                     
                     console.log(totalPlaytime)
                     console.log(averagePlaytime)
-                    place("Total time in-game : " + processPlaytime(totalPlaytime));
-                    place("Played : " + totalPlayedPercent + "% of owned games (" + playedGames + '/' + userGames.game_count + ')');
-                    place("Average playtime per played game : " + processPlaytime(averagePlaytime));
-                    place('');
-                    
-                    
+                    place("Total time in-game : " + processPlaytime(totalPlaytime), "gameStats");
+                    place("Played : " + totalPlayedPercent + "% of owned games (" + playedGames + '/' + userGames.game_count + ')', "gameStats");
+                    place("Average playtime per game : " + processPlaytime(averagePlaytime), "gameStats");
+                    place('', "gameStats"); 
                 });
-                      
                 
-                if(user.realname){place("Real name : " + user.realname);}
+                //recentGames
                 
-                var country = user.loccountrycode;
-                var state = user.locstatecode;
-                var city = user.loccityid;
+                //place("");
+                //var loader = document.createTextNode("[Loading recent playtime information]");
+                //document.getElementById("main").appendChild(loader);
                 
-
-                $.getJSON("https://raw.githubusercontent.com/Holek/steam-friends-countries/master/data/steam_countries.json", function(result){
-                    if(country){
-                        document.getElementById("main").appendChild(document.createTextNode("[Loading location information]"));
-                        country = result[country];
-                        state = country.states[state];
-                        city = state.cities[city];
-                        if(state){state = state.name + ","}else{state = '';}
-                        if(city){city = city.name + ","}else{city = '';}
-                        document.getElementById("main").removeChild(document.getElementById("main").lastChild);
-                        place("Lives in : " + city + " " + state + " " + country.name);
-                    }
-
-                    place("");
-                    var loader = document.createTextNode("[Loading recent playtime information]");
-                    document.getElementById("main").appendChild(loader);
-                    
-                    $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:3}, function(result){
-                        console.log(result);
-                        loader.parentNode.removeChild(loader);
-                        if (result.response.games){
-                            
-                            place("Recently Played Games:");
-                            place("");
-                            
-                            var games = result.response.games;
-                            for(var i=0; i<games.length; i++){
-                                var src = "http://media.steampowered.com/steamcommunity/public/images/apps/"+ games[i].appid + "/" + games[i].img_logo_url + ".jpg";
-                                place(games[i].name);
-                                document.getElementById("main").appendChild(newImage(src));                        
-                                place("");
-                                place("Last two weeks played : " + processPlaytime(games[i].playtime_2weeks));
-                                place("Total playtime : " + processPlaytime(games[i].playtime_forever));
-                                place('');
-                            }
-                        }else{
-                            place("No recently played games")
+                $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:3}, function(result){
+                    console.log(result);
+                    //loader.parentNode.removeChild(loader);
+                    if (result.response.games){                        
+                        var games = result.response.games;
+                        for(var i=0; i<games.length; i++){
+                            var src = "http://media.steampowered.com/steamcommunity/public/images/apps/"+ games[i].appid + "/" + games[i].img_logo_url + ".jpg";
+                            place(games[i].name, "recentGames");
+                            document.getElementById("recentGames").appendChild(newImage(src));                        
+                            place("", "recentGames");
+                            place("Last two weeks played : " + processPlaytime(games[i].playtime_2weeks), "recentGames");
+                            place("Total playtime : " + processPlaytime(games[i].playtime_forever), "recentGames");
+                            place('', "recentGames");
                         }
-                        
-                    });
-                
+                    }else{
+                        place("No recently played games", "recentGames")
+                    }
+                    
                 });
                 
-
             });
         });
     }

@@ -18,10 +18,38 @@
             night = "PM";
             if(hours!==12){hours = hours - 12;}    
         }
-        if(hours==0){hours = 12;}
+        if(hours == 0){hours = 12;}
         var day = "0" + date.getDate();
         var minutes = "0" + date.getMinutes();
         return(month + ' ' + day.substr(-2) + ' ' +year + ' at ' + hours + ':' + minutes.substr(-2) + ' ' + night);
+    }
+    
+    function processPlaytime(minutes){
+        if (minutes < 60){
+            var unit = " minute";
+            if(minutes>1){unit += "s";}
+            return minutes + unit;
+        }
+        var hours = minutes/60;
+        hours = Math.round(hours * 10) / 10;
+        if (hours < 24) {
+            var unit = " hour";
+            if(hours>1){unit += "s";}
+            return hours + unit;
+        }
+        var days = hours/24;
+        days = Math.round(days * 10) / 10;
+        if (days < 365) {
+            var unit = " day";
+            if(days>1){unit += "s";}
+            return days + unit + " or " + hours + " hours";
+        }
+        var years = days/365;
+        years = Math.round(years * 10) / 10;
+        var unit = " year";
+        if(years>1){unit += "s";}
+            return years + unit + " or " + days + " days or " + hours + " hours";
+        
     }
 
     function place(output){
@@ -79,9 +107,40 @@
                 else if(vState == 3){output += "Friends of friends";}
                 else if(vState == 4){output += "Users only"; }
                 else if(vState == 5){output += "Public"; }
-                place(output);              
+                place(output);
                 
-                place('');
+                document.getElementById("main").innerHTML+=("Steam Community Profile Page".link("http://steamcommunity.com/profiles/"+sid));
+                place("");
+                
+                $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:2}, function(result){
+                    console.log(result);
+                    var userGames = result.response;
+                    if(userGames.game_count){place("Games owned : " + userGames.game_count);}
+                    
+                    var totalPlaytime = 0;
+                    var playedGames = 0;
+                    for(i in userGames.games){
+                        var playtime = userGames.games[i].playtime_forever;
+                        if(userGames.games[i].appid == 570){console.log(playtime);}
+                        totalPlaytime += playtime;
+                        if(playtime > 10){playedGames+=1;}
+                        
+                    }
+                    var totalPlayedPercent = (playedGames/userGames.game_count)*100;
+                    totalPlayedPercent = Math.round(totalPlayedPercent * 10) / 10;
+                    var averagePlaytime = totalPlaytime/playedGames;
+                    averagePlaytime = Math.round(averagePlaytime * 10) / 10;
+                    
+                    console.log(totalPlaytime)
+                    console.log(averagePlaytime)
+                    place("Total time in-game : " + processPlaytime(totalPlaytime));
+                    place("Played : " + totalPlayedPercent + "% of owned games (" + playedGames + '/' + userGames.game_count + ')');
+                    place("Average playtime per played game : " + processPlaytime(averagePlaytime));
+                    place('');
+                    
+                    
+                });
+                      
                 
                 if(user.realname){place("Real name : " + user.realname);}
                 
@@ -106,7 +165,7 @@
                     var loader = document.createTextNode("[Loading recent playtime information]");
                     document.getElementById("main").appendChild(loader);
                     
-                    $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:2}, function(result){
+                    $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:3}, function(result){
                         console.log(result);
                         loader.parentNode.removeChild(loader);
                         if (result.response.games){
@@ -117,17 +176,17 @@
                             var games = result.response.games;
                             for(var i=0; i<games.length; i++){
                                 var src = "http://media.steampowered.com/steamcommunity/public/images/apps/"+ games[i].appid + "/" + games[i].img_logo_url + ".jpg";
-                                console.log(src);
                                 place(games[i].name);
                                 document.getElementById("main").appendChild(newImage(src));                        
                                 place("");
-                                place("Last two weeks played : " + games[i].playtime_2weeks + "minutes" );
-                                place("Total playtime : " + games[i].playtime_2weeks + "minutes");
+                                place("Last two weeks played : " + processPlaytime(games[i].playtime_2weeks));
+                                place("Total playtime : " + processPlaytime(games[i].playtime_forever));
                                 place('');
                             }
                         }else{
                             place("No recently played games")
                         }
+                        
                     });
                 
                 });

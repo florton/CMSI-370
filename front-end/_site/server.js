@@ -10,6 +10,7 @@ function proxy() {
         var GetPlayerSummaries ="ISteamUser/GetPlayerSummaries/v0002/?key=FADC45FD3C92FDFFDBCDA01F2A4149A9&steamids=";
         var ResolveVanityUrl ="ISteamUser/ResolveVanityURL/v0001/?key=FADC45FD3C92FDFFDBCDA01F2A4149A9&vanityurl=";
         var RecentlyPlayedGames = "IPlayerService/GetRecentlyPlayedGames/v0001/?key=FADC45FD3C92FDFFDBCDA01F2A4149A9&steamid=";
+        var GetOwnedGames = "IPlayerService/GetOwnedGames/v0001/?key=FADC45FD3C92FDFFDBCDA01F2A4149A9&steamid=";
         var url = "http://api.steampowered.com/"
         
         res.header("Access-Control-Allow-Origin", "*");
@@ -21,7 +22,9 @@ function proxy() {
             }
             if (flag === '1'){
                 url += GetPlayerSummaries+sid;
-            }else{
+            }else if (flag === '2'){
+                url += GetOwnedGames+sid+"&include_played_free_games=1";
+            }else if (flag === '3'){
                 url += RecentlyPlayedGames+sid;
             }
             req.pipe(request(url)).pipe(res);

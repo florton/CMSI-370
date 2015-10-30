@@ -9,11 +9,14 @@
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     
     <style>
-    body { width: 960px; margin: 0 auto; }
+    body { width: auto; margin: 0 auto; }
     </style>
 </head>
 <body>
+    <div class="page-header">
     <h1>Steam User Lookup</h1>
+    </div>
+    
     <h3>Enter a 17 digit user id or a vanity id</h3>
     <p>Ids for testing : 76561198025207102, 76561198040928520, 76561198023545004, brickobanna,
     NatKueenCole, gabelogannewell</p>
@@ -22,7 +25,7 @@
             <input type="text">
         </div>
     </form><br>
-    <button onclick="submit();">Submit</button><br>
+    <button type="button" class="btn btn-lg btn-success" onclick="submit();">Submit</button><br>
     <div id="main"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>

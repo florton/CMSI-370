@@ -1,4 +1,12 @@
-
+    $(function() {
+        $('#all').hide();
+    });
+    
+    $("#idform").submit(function(e){
+        e.preventDefault();
+        submit();
+    });    
+    
     function newImage(src) {
         var img = document.createElement("img");
         img.src = src;
@@ -59,6 +67,7 @@
     }
             
     function submit(){       
+        
         $('#all').show();
         $(document).ready(function(){
             document.getElementById("main").innerHTML = "";
@@ -67,10 +76,11 @@
             document.getElementById("profileInfo").innerHTML = "";
             document.getElementById("gameStats").innerHTML = "";
             document.getElementById("recentGames").innerHTML = "";
-
+            
+            document.getElementById("loader").innerHTML ='<div class="alert alert-info" role="alert"><strong>Loading User Info</strong> Please wait momentarily</div>';
+            
             var sid = document.getElementById("idform").elements[0].value;
-            //var vsid = sid.match(/[\d]{17}/);
-            //if (vsid!==null){sid = vsid[0];}
+            console.log(sid);
             $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:1}, function(result){
                 document.getElementById("main").innerHTML = "";
                 console.log(result);
@@ -121,13 +131,11 @@
                 
                 $.getJSON("https://raw.githubusercontent.com/Holek/steam-friends-countries/master/data/steam_countries.json", function(result){
                     if(country){
-                        //document.getElementById("userInfo").appendChild(document.createTextNode("[Loading location information]"));
                         country = result[country];
                         state = country.states[state];
                         city = state.cities[city];
                         if(state){state = state.name + ","}else{state = '';}
                         if(city){city = city.name + ","}else{city = '';}
-                        //document.getElementById("main").removeChild(document.getElementById("userInfo").lastChild);
                         place("Lives in : " + city + " " + state + " " + country.name, "userInfo");
                     }
                     if(user.steamid == 76561198023545004){
@@ -193,7 +201,6 @@
                 
                 $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:3}, function(result){
                     console.log(result);
-                    //loader.parentNode.removeChild(loader);
                     if (result.response.games){                        
                         var games = result.response.games;
                         for(var i=0; i<games.length; i++){
@@ -214,6 +221,10 @@
                     
                 });
                 
+                document.getElementById("loader").innerHTML = "";
+                
             });
+            
+
         });
     }

@@ -2,6 +2,8 @@ var BoxesTouch = {
     /**
      * Sets up the given jQuery collection as the drawing area(s).
      */
+     
+     
     setDrawingArea: function (jQueryElements) {
         // Set up any pre-existing box elements for touch behavior.
         jQueryElements
@@ -84,3 +86,6 @@ var BoxesTouch = {
     }
 
 };
+
+
+

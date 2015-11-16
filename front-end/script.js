@@ -1,90 +1,94 @@
     $(function() {
         $('#all').hide();
-    });
+    }); // JD: 14
     
     $("#idform").submit(function(e){
         e.preventDefault();
         submit();
     });    
     
-    function newImage(src) {
+    function newImage(src) { // JD: 2
         var img = document.createElement("img");
         img.src = src;
-        img.hspace=0;
-        img.vspace=0;
+        img.hspace=0; // JD: 7, 23
+        img.vspace=0; // JD: 7, 23
         return img;
     }
 
-    function processTime(timeStamp){
-        var date = new Date(timeStamp*1000);
+    function processTime(timeStamp){ // JD: 2, 6
+        var date = new Date(timeStamp*1000); // JD: 7
         var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         var year = date.getFullYear();
         var month = months[date.getMonth()];
         var hours = date.getHours();
         var night = "AM";
-        if(hours >= 12){
+        if(hours >= 12){ // JD: 6, 15
             night = "PM";
-            if(hours!==12){hours = hours - 12;}    
+            if(hours!==12){hours = hours - 12;}    // JD: 16
         }
-        if(hours == 0){hours = 12;}
+        if(hours == 0){hours = 12;} // JD: 16, 17
         var day = "0" + date.getDate();
         var minutes = "0" + date.getMinutes();
+        // JD: 15
         return(month + ' ' + day.substr(-2) + ' ' +year + ' at ' + hours + ':' + minutes.substr(-2) + ' ' + night);
     }
     
-    function processPlaytime(minutes){
-        if (minutes < 60){
+    function processPlaytime(minutes){ // JD: 2, 6
+        if (minutes < 60){ // JD: 6
             var unit = " minute";
-            if(minutes>1){unit += "s";}
+            if(minutes>1){unit += "s";} // JD: 7, 16
             return minutes + unit;
         }
-        var hours = minutes/60;
+        var hours = minutes/60; // JD: 7
         hours = Math.round(hours * 10) / 10;
         if (hours < 24) {
             var unit = " hour";
-            if(hours>1){unit += "s";}
+            if(hours>1){unit += "s";} // JD: 7, 16
             return hours + unit;
         }
-        var days = hours/24;
+        var days = hours/24; // JD: 7
         days = Math.round(days * 10) / 10;
         if (days < 365) {
             var unit = " day";
-            if(days>1){unit += "s";}
+            if(days>1){unit += "s";} // JD: 7, 16
             return days + unit + " or " + hours + " hours";
         }
-        var years = days/365;
+        var years = days/365; // JD: 7
         years = Math.round(years * 10) / 10;
         var unit = " year";
-        if(years>1){unit += "s";}
-            return years + unit + " or " + days + " days or " + hours + " hours";
+        if(years>1){unit += "s";} // JD: 7, 16
+            return years + unit + " or " + days + " days or " + hours + " hours"; // JD: 12
         
     }
 
-    function place(output, element){
-        if(element == undefined ){element = "main"}
-        document.getElementById(element).appendChild(document.createTextNode(output));
+    function place(output, element){ // JD: 2, 6
+        if(element == undefined ){element = "main"} // JD: 5, 16, 17
+        document.getElementById(element).appendChild(document.createTextNode(output)); // JD: 18
         document.getElementById(element).appendChild(document.createElement("br"));
     }
             
-    function submit(){       
+    function submit(){       // JD: 2, 6
         
         $('#all').show();
-        $(document).ready(function(){
-            document.getElementById("main").innerHTML = "";
+        $(document).ready(function(){ // JD: 3, 6, 14, 19
+            document.getElementById("main").innerHTML = ""; // JD: 18
             document.getElementById("userInfo").innerHTML = "";
             document.getElementById("profilePicture").innerHTML = "";
             document.getElementById("profileInfo").innerHTML = "";
             document.getElementById("gameStats").innerHTML = "";
             document.getElementById("recentGames").innerHTML = "";
-            
+
+            // JD: 20
             document.getElementById("loader").innerHTML ='<div class="alert alert-info" role="alert"><strong>Loading User Info</strong> Please wait momentarily</div>';
             
-            var sid = document.getElementById("idform").elements[0].value;
+            var sid = document.getElementById("idform").elements[0].value; // JD: 18
             console.log(sid);
-            $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:1}, function(result){
-                document.getElementById("main").innerHTML = "";
+
+            // JD: 21
+            $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:1}, function(result){ // JD: 3, 6
+                document.getElementById("main").innerHTML = ""; // JD: 18
                 console.log(result);
-                var user = result.response.players[0];
+                var user = result.response.players[0]; // JD: 22
                 
                 //profilePicture
                 
@@ -92,49 +96,52 @@
                 
                 //userInfo
                 
-                var name = document.createElement("h3")
+                var name = document.createElement("h3") // JD: 18
                 name.appendChild(document.createTextNode(user.personaname));
                 document.getElementById("userInfo").appendChild(name);
                 
                 var pState = user.personastate;
                 var output = "User is: ";
                 var state = "info";
-                if(pState == 0){
+                if(pState == 0){ // JD: 6, 15, 24
                     output += "Offline"; 
                     state = "danger";
-                }
+                } // JD: 25
                 else if(pState == 1){
                     output += "Online";
                     state = "success";
                 }
-                else if(pState == 2){output += "Busy";}
-                else if(pState == 3){output += "Away"; }
-                else if(pState == 4){output += "Snooze"; }
-                else if(pState == 5){output += "Looking to trade"; }
-                else if(pState == 5){output += "Looking to play"; }
+                else if(pState == 2){output += "Busy";} // JD: 16, 17, 25
+                else if(pState == 3){output += "Away"; } // JD: 16, 17, 25
+                else if(pState == 4){output += "Snooze"; } // JD: 16, 17, 25
+                else if(pState == 5){output += "Looking to trade"; } // JD: 16, 17, 25
+                else if(pState == 5){output += "Looking to play"; } // JD: 16, 17, 25
+                // JD: 18, 20
                 document.getElementById("userInfo").innerHTML += "<h3><span class='label label-"+state+"'>"+output+"</span><br></h3>"
                 
-                if(pState == 0){
+                if(pState == 0){ // JD: 6, 15, 17
                     place("Last online: " + processTime(user.lastlogoff), "userInfo");
-                }else{
-                    if(user.gameextrainfo){
-                        place("Currently playing : " + user.gameextrainfo, "userInfo");
+                }else{ // JD 6
+                    if(user.gameextrainfo){ // JD: 6, 15
+                        place("Currently playing : " + user.gameextrainfo, "userInfo"); // JD: 18, 26
                     }else{
                         place("Not currently in game", "userInfo");
                     }
                 }
                 
-                if(user.realname){place("Real name : " + user.realname, "userInfo");}
+                if(user.realname){place("Real name : " + user.realname, "userInfo");} // JD: 6, 15, 16
                 var country = user.loccountrycode;
                 var state = user.locstatecode;
                 var city = user.loccityid;
-                
+
+                // JD: 27
+
                 $.getJSON("https://raw.githubusercontent.com/Holek/steam-friends-countries/master/data/steam_countries.json", function(result){
                     if(country){
                         country = result[country];
                         state = country.states[state];
                         city = state.cities[city];
-                        if(state){state = state.name + ","}else{state = '';}
+                        if(state){state = state.name + ","}else{state = '';} // JD: 28
                         if(city){city = city.name + ","}else{city = '';}
                         place("Lives in : " + city + " " + state + " " + country.name, "userInfo");
                     }
@@ -164,6 +171,7 @@
                 
                 //gameStats
                 if(vState!==1){
+                    // JD: 29
                     $.getJSON("http://localhost:3000//?sid=", {sid:sid, flag:2}, function(result){
                         console.log(result);
                         var userGames = result.response;
@@ -174,6 +182,7 @@
                         var playedGames = 0;
                         for(i in userGames.games){
                             var playtime = userGames.games[i].playtime_forever;
+                            // JD: 30
                             if(userGames.games[i].appid == 570){console.log(playtime);}
                             totalPlaytime += playtime;
                             if(playtime > 10){playedGames+=1;}
@@ -227,4 +236,4 @@
             
 
         });
-    }
+    } // JD: 31

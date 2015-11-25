@@ -1,4 +1,4 @@
-#SoYjoko
+#SoYjoko ![](http://puu.sh/lxTHK/67fb61f084.jpg)
 ##A web based samurai adventure game
 
 ##Overview

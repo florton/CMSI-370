@@ -1,104 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
-<head> <!-- JD: 8 -->
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Steam User Lookup</title>  
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"> <!-- JD: 9 -->
-    
-    <style>
-    body { width: 960px; margin: 0 auto; }
-    </style> <!-- JD: 10 -->
-    
-</head>
-<body>
-    <!-- JD: 11 -->
-    <div class="page-header">
-    <h1>Steam User Lookup</h1> <!-- JD: 12 -->
-    </div>
-    
-    <h3>Enter a 17 Digit User Id or a Vanity Id</h3>
-    <p>Ids for testing : 76561198025207102,  76561198040928520, 76561197967853593, brickobanna, 
-    NatKueenCole, gabelogannewell, geel9</p>
-    <form id="idform" method="get" name="idform">
-        <div>
-            <input type="text">
+    <html lang="en">
+
+    <head>
+        <!-- JD: 8 -->
+        <meta charset='utf-8'>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Steam User Lookup</title>
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <!-- JD: 9 -->
+
+        <style>
+            body {
+                text-align: center;
+            }
+            
+            #all {
+                margin: auto;
+                width: 760px;
+            }
+            
+            @media (min-width:765px) {
+                .col-sm-10 {
+                    width: 100%;
+                }
+                .col-sm-5 {
+                    width: 50%;
+                }
+            }
+        </style>
+        <!-- JD: 10 -->
+
+    </head>
+
+    <body>
+        <!-- JD: 11 -->
+        <div class="page-header">
+            <h1>Steam User Lookup</h1>
+            <!-- JD: 12 -->
         </div>
-    </form>
-    <br>
-    <button type="button" class="btn btn-lg btn-success" onclick="submit();">Submit</button>
-    <br>
-    <br>
-    <div id="all">
-    <center> <!-- JD: 13 -->
-    <div class="row">
-        <div class="col-sm-10">
-            <div id="loader"></div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-10">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">User Info</h3>
+
+        <h3>Enter a 17 Digit User Id or a Vanity Id</h3>
+        <p>Friends and select accounts : 76561198025207102, 76561197967853593, brickobanna, NatKueenCole, gabelogannewell, geel9</p>
+        <form id="idform" method="get" name="idform">
+            <div>
+                <input type="text">
+            </div>
+        </form>
+        <br>
+        <button type="button" class="btn btn-lg btn-success" onclick="submit();">Submit</button>
+        <br>
+        <br>
+        <div id="all">
+            <!-- JD: 13 -->
+            <div class="row">
+                <div class="col-sm-10">
+                    <div id="loader"></div>
                 </div>
-                <div class="panel-body">
-                    <div class="col-sm-5">
-                        <div id="profilePicture"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-10">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">User Info</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-sm-5">
+                                <div id="profilePicture"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div id="userInfo"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div id="userInfo"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Profile Info</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div id="profileInfo"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Gameplay Stats</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div id="gameStats"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-sm-5">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Profile Info</h3>
-                </div>
-                <div class="panel-body">
-                    <div id="profileInfo"></div>
-                </div>
+
+            <div class="row">
+                <center>
+                    <!-- JD: 13 -->
+                    <div class="col-sm-10">
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Recently Played</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div id="recentGames"></div>
+                            </div>
+                        </div>
+                    </div>
+                </center>
+            </div>
+            <div class="row">
+                <div id="main"></div>
             </div>
         </div>
-        <div class="col-sm-5">
-            <div class="panel panel-warning">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Gameplay Stats</h3>
-                </div>
-                <div class="panel-body">
-                    <div id="gameStats"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row">
-        <center> <!-- JD: 13 -->
-        <div class="col-sm-10">
-            <div class="panel panel-danger">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Recently Played</h3>
-                </div>
-                <div class="panel-body">
-                    <div id="recentGames"></div>
-                </div>
-            </div>
-        </div>
-        </center>
-    </div>
-    <div class="row">
-        <div id="main"></div>
-    </div>
-    </center>
-    </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="script.js"></script> 
-</body>
-</html>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <script src="script.js"></script>
+    </body>
+
+    </html>

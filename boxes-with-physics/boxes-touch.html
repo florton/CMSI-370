@@ -1,61 +1,57 @@
 <!doctype html>
 
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8" />
 
     <!-- Assorted iOS-related metadata. -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 
     <title>Direct Manipulation on a Web Page: Touch Version</title>
 
     <style>
-            /* Drawing area properties. */
+        /* Drawing area properties. */
+        
         .drawing-area {
             position: relative;
             user-select: none;
         }
-
         /* Box properties and their variants. */
+        
         .box {
             border: thin solid black;
             position: absolute;
         }
-
-
     </style>
-  </head>
-    
-  <body>
+</head>
+
+<body>
     <!-- "Pre-load" the drawing area with a couple of boxes.
          Inline style attributes are tolerable here since they are
          manually set when done in code anyway. -->
-        </div>
-      <div id="console"></div>
-    <div id="drawing-area">
-      <div id="windowBorder"></div>      
-      <div class="box"
-          style="width: 60px; height: 60px; left: 50px; top: 50px">
-      </div>
-      <div class="box"
-          style="width: 80px; height: 50px; left: 184px; top: 256px">
-      </div>
-      <div class="box"
-          style="width: 70px; height: 90px; left: 120px; top: 384px">
     </div>
+    <div id="drawing-area">
+        <div id="windowBorder"></div>
+        <div class="box" style="width: 60px; height: 60px; left: 50px; top: 50px">
+        </div>
+        <div class="box" style="width: 80px; height: 50px; left: 184px; top: 256px">
+        </div>
+        <div class="box" style="width: 70px; height: 90px; left: 120px; top: 384px">
+        </div>
 
+        <!-- Load up jQuery first. -->
+        <script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
 
-    <!-- Load up jQuery first. -->
-    <script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+        <!-- Load up the controller code. -->
+        <script src="boxes-touch.js"></script>
 
-    <!-- Load up the controller code. -->
-    <script src="boxes-touch.js"></script>
-    
-    <!-- Code that is totally specific to this page. -->
-    <script>
-        $(function () {
-            $("#drawing-area").boxesTouch();
-        });
-    </script>
-  </body>
+        <!-- Code that is totally specific to this page. -->
+        <script>
+            $(function() {
+                $("#drawing-area").boxesTouch();
+            });
+        </script>
+</body>
+
 </html>

@@ -47,8 +47,8 @@
         <div class="row">
             <div class="col-sm-4" id="boxes">
                 <div class="box" id="box1" style="background-color:#FF0000;"></div>
-                <div class="box" style="background-color:#00FF00;"></div>
-                <div class="box" style="background-color:#0000FF;"></div>
+                <div class="box" id="box2" style="background-color:#00FF00;"></div>
+                <div class="box" id="box3" style="background-color:#0000FF;"></div>
             </div>
 
             <div class="col-sm-4">
@@ -63,8 +63,9 @@
     <script src="dragAndDrop.js"></script>
     
     <script>
-    $("#box1").dragAndDrop($("#dropZone"), function(dropedBox) {
-        console.log(droppedBox);
+    $("box1")
+    $("#boxes").children().dragAndDrop($("#dropZone"), function(droppedBox) {
+        document.body.style.backgroundColor = droppedBox.css( "backgroundColor" );
     });
     </script>
     

@@ -71,10 +71,12 @@ function loadUserPreviews() {
         console.log(result);
         for (var i=0; i<result.response.players.length; i++){
             var picture = result.response.players[i].avatarfull;
-            document.getElementById("previewUsers").appendChild(newImage("" + picture));
+            picture = newImage("" + picture);
+            document.getElementById("previewUsers").appendChild(picture);
         }
+        console.log($("previewUsers").children());
+        $("#previewUsers").children().dragAndDrop();
     });
-    
 }
 
 function newImage(src) { // JD: 2

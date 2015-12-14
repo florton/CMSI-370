@@ -1,12 +1,15 @@
 $(function() {
     $('#all').hide();
-    // JD: 14
+    serverHost = "http://localhost:3000//";
+    loadUserPreviews();    
 });
 
 $("#idform").submit(function(e) {
     e.preventDefault();
     submit();
 });
+
+var playerPreviewList = ["76561198025207102", "76561197967853593", "76561198023545004", "76561198028934613", "76561197984820423", "76561198056146892"];
 
 function submit() { // JD: 2, 6
     $('#all').show();
@@ -23,11 +26,7 @@ function submit() { // JD: 2, 6
         + 'role="alert"><strong>Loading User Info</strong> Please wait momentarily</div>';
 
         sid = document.getElementById("idform").elements[0].value; // JD: 18
-        console.log(sid);
-
-
-        //I tried doing it with a relative URL, but I was having issues since the listening port is specified on the server
-        serverHost = "http://localhost:3000//";
+        console.log(sid);        
 
         // JD: 21
         $.getJSON(serverHost + "?sid=", {
@@ -36,14 +35,16 @@ function submit() { // JD: 2, 6
         }, function(result) { // JD: 3, 6
             document.getElementById("main").innerHTML = ""; // JD: 18
             console.log(result);
-            user = result.response.players[0]; // JD: 22
+            var user = result.response.players[0]; // JD: 22
             if (user !== undefined) {
-                vState = user.communityvisibilitystate;
-                loadProfilePicture();
-                loadUserInfo();
-                loadProfileInfo();
-                loadGameplayStats();
-                loadRecentGames();
+                var vState = user.communityvisibilitystate;
+                
+                loadProfilePicture(user);
+                loadUserInfo(user);
+                loadProfileInfo(user, vState);
+                loadGameplayStats(user, vState);
+                loadRecentGames(user);
+                
                 document.getElementById("loader").innerHTML = "";
             } else {
                 document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' 
@@ -54,6 +55,27 @@ function submit() { // JD: 2, 6
 
     });
 } // JD: 31
+
+function loadUserPreviews() {
+    var sidUrl = "";
+    for (var i=0; i< playerPreviewList.length; i++){
+        sidUrl += playerPreviewList[i];
+        if(i < playerPreviewList.length-1){
+            sidUrl+=",";
+        }
+    }
+    $.getJSON(serverHost + "?sid=", {
+        sid: sidUrl,
+        flag: 1
+    }, function(result) {
+        console.log(result);
+        for (var i=0; i<result.response.players.length; i++){
+            var picture = result.response.players[i].avatarfull;
+            document.getElementById("previewUsers").appendChild(newImage("" + picture));
+        }
+    });
+    
+}
 
 function newImage(src) { // JD: 2
     var img = document.createElement("img");
@@ -127,11 +149,11 @@ function place(output, element) { // JD: 2, 6
     document.getElementById(element).appendChild(document.createElement("br"));
 }
 
-function loadProfilePicture() {
+function loadProfilePicture(user) {
     document.getElementById("profilePicture").appendChild(newImage("" + user.avatarfull));
 }
 
-function loadOnlineState() {
+function loadOnlineState(user) {
     var pState = user.personastate;
     var output = "User is: ";
     var state = "info";
@@ -171,7 +193,7 @@ function loadOnlineState() {
     }
 }
 
-function loadRealNameandLocation() {
+function loadRealNameandLocation(user) {
     if (user.realname) {
         place("Real name : " + user.realname, "userInfo");
     } // JD: 6, 15, 16
@@ -203,15 +225,15 @@ function loadRealNameandLocation() {
     });
 }
 
-function loadUserInfo() {
+function loadUserInfo(user) {
     var name = document.createElement("h3") // JD: 18
     name.appendChild(document.createTextNode(user.personaname));
     document.getElementById("userInfo").appendChild(name);
-    loadOnlineState();
-    loadRealNameandLocation();
+    loadOnlineState(user);
+    loadRealNameandLocation(user);
 }
 
-function loadProfileInfo() {
+function loadProfileInfo(user, vState) {
     place('');
     place("Steam id: " + user.steamid, "profileInfo");
     if (user.timecreated) {
@@ -236,7 +258,7 @@ function loadProfileInfo() {
     place('', "profileInfo")
 }
 
-function loadGameplayStats() {
+function loadGameplayStats(user, vState) {
 
     if (vState !== 1) {
         // JD: 29
@@ -282,7 +304,7 @@ function loadGameplayStats() {
     }
 }
 
-function loadRecentGames() {
+function loadRecentGames(user) {
     $.getJSON(serverHost + "?sid=", {
         sid: sid,
         flag: 3

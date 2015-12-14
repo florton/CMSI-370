@@ -79,6 +79,10 @@ function loadUserPreviews() {
             document.getElementById("idform").elements[0].value = event[0].sid;
             submit();
         });
+    }).fail(function(result){
+        $('#intro').hide();
+        $('#all').show();
+        document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
     });
 }
 

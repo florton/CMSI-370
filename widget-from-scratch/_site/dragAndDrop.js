@@ -50,7 +50,7 @@
     $.fn.dragAndDrop = function() {
         targets = Array.prototype.slice.call(arguments, 0);
         callback = targets.pop();
-        //makeUnselectable($(this));
+        makeUnselectable($(this));
         this.mousedown(createImage);
         $("body").mouseup(dropImage);
     };
@@ -60,7 +60,7 @@
             .addClass('unselectable')
             .attr('unselectable', 'on')
             .attr('draggable', 'false')
-            .attr('style', "-moz-user-select: none;")
+            //.attr('style', "-moz-user-select: none;")
             .on('dragstart', function() {
                 return false;
             });

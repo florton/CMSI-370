@@ -6,7 +6,6 @@
     var selectedBox;
 
     var moveObject = function(event) {
-        console.log(dragImage.width);
         dragImage.offset({
             left: event.pageX - dragImage.width()/2,
             top: event.pageY - dragImage.height()/2

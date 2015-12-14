@@ -34,7 +34,8 @@
 
     var dropImage = function(event) {
         for (var i = 0; i < targets.length; i++) {
-            var dropZone = $("#" + targets[i]);
+            var dropZone = targets[i];
+            console.log(dropZone);
             if (event.pageX > dropZone.offset().left && event.pageX < dropZone.offset().left + dropZone.width()) {
                 if (event.pageY > dropZone.offset().top && event.pageY < dropZone.offset().top + dropZone.height()) {
                     if (selectedBox !== null) {

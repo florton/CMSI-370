@@ -75,7 +75,7 @@ function loadUserPreviews() {
             document.getElementById("previewUsers").appendChild(picture);
         }
 
-        $("#previewUsers").children().dragAndDrop("intro", "profilePic", function(event) {
+        $("#previewUsers").children().dragAndDrop($("#intro"), $("#profilePicture"), function(event) {
             document.getElementById("idform").elements[0].value = event[0].sid;
             submit();
         });

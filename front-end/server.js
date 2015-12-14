@@ -28,6 +28,7 @@ function proxy() { // JD: 2
             } else if (flag === '3') { // JD: 6 (2x)
                 url += RecentlyPlayedGames + sid; // JD: 7
             }
+            console.log(res);
             req.pipe(request(url)).pipe(res);
         });
     });

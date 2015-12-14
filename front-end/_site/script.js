@@ -13,6 +13,7 @@ var playerPreviewList = ["76561198025207102", "76561197967853593", "765611980235
 
 function submit() { // JD: 2, 6
     $('#all').show();
+    $('#intro').hide();
     $(document).ready(function() { // JD: 3, 6, 14, 19
         document.getElementById("main").innerHTML = ""; // JD: 18
         document.getElementById("userInfo").innerHTML = "";
@@ -50,6 +51,9 @@ function submit() { // JD: 2, 6
                 document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' 
                 + '<strong>User Could Not Be Found</strong> Please input an existing steam user id</div>';
             }
+        }).fail(function(result) {
+                document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' 
+                + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
         });
 
 
@@ -72,10 +76,14 @@ function loadUserPreviews() {
         for (var i=0; i<result.response.players.length; i++){
             var picture = result.response.players[i].avatarfull;
             picture = newImage("" + picture);
+            picture.sid = result.response.players[i].steamid;
             document.getElementById("previewUsers").appendChild(picture);
         }
 
-        $("#previewUsers").children().dragAndDrop();
+        $("#previewUsers").children().dragAndDrop("intro",function(event){
+            document.getElementById("idform").elements[0].value = event[0].sid;
+            submit();
+        });
     });
 }
 

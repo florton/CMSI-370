@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Drag and Drop Demo</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+
+<style>
+    .box {
+        width: 50px;
+        height: 50px;
+        margin: 5px;
+        border-width: 2px;
+        border-style: solid;
+    }
+    
+    .dropper {
+        width: 100px;
+        height: 100px;
+        border-width: 4px;
+        border-style: solid;
+    }
+    
+    body {
+        text-align: center;
+    }
+    
+    .container {
+    margin: auto;
+    width: 760px;
+    }
+</style>
+
+<body>
+    <div class="page-header">
+        <h1>Drag and drop demo</h1>
+    </div>
+    <h3>drag the colored boxes on the left to the box on the right</h3>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4" id="boxes">
+                <div class="box" id="box1" style="background-color:#FF0000;"></div>
+                <div class="box" style="background-color:#00FF00;"></div>
+                <div class="box" style="background-color:#0000FF;"></div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="dropper" id="dropZone" style="float: right;"></div>
+            </div>
+
+        </div>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="dragAndDrop.js"></script>
+    
+    <script>
+    $("#box1").dragAndDrop($("#dropZone"), function(dropedBox) {
+        console.log(droppedBox);
+    });
+    </script>
+    
+
+
+</body>

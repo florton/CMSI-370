@@ -55,16 +55,18 @@
         $("body").mouseup(dropImage);
     };
 
-    var makeUnselectable = function($target) {
-        $target
+    var makeUnselectable = function(target) {
+        target
             .addClass('unselectable')
             .attr('unselectable', 'on')
             .attr('draggable', 'false')
-            .attr('style', "-moz-user-select: none;")
             .on('dragstart', function() {
                 return false;
-            });
-
+            })
+            .css('-webkit-user-select', 'none')
+            .css('-moz-user-select', 'none')
+            .css('-ms-user-select', 'none');
+            
     };
 
 }(jQuery));

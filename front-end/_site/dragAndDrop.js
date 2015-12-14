@@ -3,7 +3,10 @@
     var dragImage;
     
     var moveObject = function (event) {
-        dragImage.offset({left: event.pageX, top: event.pageY });
+        dragImage.offset({
+            left: event.pageX-dragImage[0].width/2,
+            top: event.pageY-dragImage[0].height/2 
+        });
     };
     
     var unbindObject = function (event) {
@@ -11,17 +14,24 @@
         $("body").unbind("mousemove", moveObject);
     };
     
-    $.fn.dragAndDrop = function () {
+    $.fn.dragAndDrop = function (height, width, target) {
+        
+        makeUnselectable($(this));
         
         this.mousedown(function (event) {
             
-            makeUnselectable($(this));
-            
             dragImage = $(event.target).clone();
-            dragImage.addClass("dragClone");
-            dragImage.offset({left: event.pageX, top: event.pageY });
-            
+            console.log(dragImage)
+            //dragImage.addClass("dragClone");
+            dragImage[0].width = $(event.target)[0].width;
+            dragImage[0].height = $(event.target)[0].height;
+            console.log(dragImage[0].width/2 + " " +dragImage[0].height/2)
+       
             $("body").append(dragImage);
+            dragImage.offset({
+                left: event.pageX-dragImage[0].width/2,
+                top: event.pageY-dragImage[0].height/2 
+            });     
             $("body").mousemove(moveObject);
             
         });
@@ -31,11 +41,11 @@
     
     var makeUnselectable = function( $target ) {
     $target
-        .addClass( 'unselectable' ) // All these attributes are inheritable
-        .attr( 'unselectable', 'on' ) // For IE9 - This property is not inherited, needs to be placed onto everything
-        .attr( 'draggable', 'false' ) // For moz and webkit, although Firefox 16 ignores this when -moz-user-select: none; is set, it's like these properties are mutually exclusive, seems to be a bug.
+        .addClass( 'unselectable' )
+        .attr( 'unselectable', 'on' ) 
+        .attr( 'draggable', 'false' ) 
         .attr('style', "-moz-user-select: none;")
-        .on( 'dragstart', function() { return false; } );  // Needed since Firefox 16 seems to ingore the 'draggable' attribute we just applied above when '-moz-user-select: none' is applied to the CSS 
+        .on( 'dragstart', function() { return false; } );  
         
     };
     

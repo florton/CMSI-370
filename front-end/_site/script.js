@@ -74,7 +74,7 @@ function loadUserPreviews() {
             picture = newImage("" + picture);
             document.getElementById("previewUsers").appendChild(picture);
         }
-        console.log($("previewUsers").children());
+
         $("#previewUsers").children().dragAndDrop();
     });
 }

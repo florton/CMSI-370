@@ -22,7 +22,8 @@ function submit() {
         document.getElementById("gameStats").innerHTML = "";
         document.getElementById("recentGames").innerHTML = "";
 
-        document.getElementById("loader").innerHTML = '<div class="alert alert-info"' + 'role="alert"><strong>Loading User Info</strong> Please wait momentarily</div>';
+        document.getElementById("loader").innerHTML = '<div class="alert alert-info"' 
+        + 'role="alert"><strong>Loading User Info</strong> Please wait momentarily</div>';
 
         sid = document.getElementById("idform").elements[0].value;
         console.log(sid);
@@ -45,10 +46,12 @@ function submit() {
 
                 document.getElementById("loader").innerHTML = "";
             } else {
-                document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' + '<strong>User Could Not Be Found</strong> Please input an existing steam user id</div>';
+                document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' 
+                + '<strong>User Could Not Be Found</strong> Please input an existing steam user id</div>';
             }
         }).fail(function(result) {
-            document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
+            document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' 
+            + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
         });
 
 
@@ -82,7 +85,8 @@ function loadUserPreviews() {
     }).fail(function(result){
         $('#intro').hide();
         $('#all').show();
-        document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
+        document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' 
+        + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
     });
 }
 
@@ -159,7 +163,6 @@ function place(output, element) {
 
 function loadProfilePicture(user) {
     var picture = newImage("" + user.avatarfull);
-    picture.id = "profilePic";
     document.getElementById("profilePicture").appendChild(picture);
 }
 

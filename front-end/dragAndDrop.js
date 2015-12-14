@@ -1,7 +1,7 @@
 (function ($) {
     
     var dragImage;
-    var target;
+    var targets;
     var callback;
     var selectedBox;
     
@@ -33,20 +33,24 @@
     };
     
     var dropImage = function (event) {
-        var dropZone = $("#"+target)[0];
-        if(event.pageX>dropZone.x && event.pageX<dropZone.x+dropZone.width){
-            if(event.pageY>dropZone.y && event.pageY<dropZone.y+dropZone.height){
-                if(selectedBox !== null){
-                    callback(selectedBox);
+        for(var i=0; i<targets.length; i++){
+            var dropZone = $("#"+targets[i]);
+            if(event.pageX>dropZone.offset().left && event.pageX<dropZone.offset().left+dropZone.width()){
+                if(event.pageY>dropZone.offset().top && event.pageY<dropZone.offset().top+dropZone.height()){
+                    if(selectedBox !== null){
+                        callback(selectedBox);
+                        break;
+                    }
                 }
             }
-        }        
+        }
         unbindObject(event);
     }
     
-    $.fn.dragAndDrop = function (targ, func) {
-        callback=func;
-        target = targ;
+    $.fn.dragAndDrop = function () {
+        targets = Array.prototype.slice.call(arguments, 0);
+        callback = targets.pop();
+        
         selectedBox = $(this);
         
         makeUnselectable($(this));

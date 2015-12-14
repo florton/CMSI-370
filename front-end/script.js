@@ -80,7 +80,7 @@ function loadUserPreviews() {
             document.getElementById("previewUsers").appendChild(picture);
         }
 
-        $("#previewUsers").children().dragAndDrop("intro",function(event){
+        $("#previewUsers").children().dragAndDrop("intro", "profilePic",function(event){
             document.getElementById("idform").elements[0].value = event[0].sid;
             submit();
         });
@@ -160,7 +160,9 @@ function place(output, element) { // JD: 2, 6
 }
 
 function loadProfilePicture(user) {
-    document.getElementById("profilePicture").appendChild(newImage("" + user.avatarfull));
+    var picture = newImage("" + user.avatarfull);
+    picture.id = "profilePic";
+    document.getElementById("profilePicture").appendChild(picture);
 }
 
 function loadOnlineState(user) {

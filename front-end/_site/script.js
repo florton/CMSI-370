@@ -62,8 +62,17 @@ function loadFriends(sid) {
         sid: sid,
         flag: 4
     }, function(result) {
-        for (var i = 0; i < 6; i++) {
-            newUserList.push(result.friendslist.friends[i].steamid);
+        var boxNumber = (result.friendslist.friends.length > 6) ? 6 : result.friendslist.friends.length;
+        console.log(boxNumber)
+        var uniqueIndexes = []
+        while (uniqueIndexes.length < boxNumber) {
+            var randomnumber = Math.floor(Math.random() * result.friendslist.friends.length)
+            if (uniqueIndexes.indexOf(randomnumber) === -1) {
+                uniqueIndexes.push(randomnumber)
+            }
+        }
+        for (var i = 0; i < boxNumber; i++) {
+            newUserList.push(result.friendslist.friends[uniqueIndexes[i]].steamid);
         }
         playerPreviewList = newUserList;
         loadUserPreviews();

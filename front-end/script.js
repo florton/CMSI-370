@@ -11,19 +11,18 @@ $("#idform").submit(function(e) {
 
 var playerPreviewList = ["76561198025207102", "76561197967853593", "76561198023545004", "76561198028934613", "76561197984820423", "76561198056146892"];
 
-function submit() { 
+function submit() {
     $('#all').show();
     $('#intro').hide();
     $(document).ready(function() {
-        document.getElementById("main").innerHTML = ""; 
+        document.getElementById("main").innerHTML = "";
         document.getElementById("userInfo").innerHTML = "";
         document.getElementById("profilePicture").innerHTML = "";
         document.getElementById("profileInfo").innerHTML = "";
         document.getElementById("gameStats").innerHTML = "";
         document.getElementById("recentGames").innerHTML = "";
 
-        document.getElementById("loader").innerHTML = '<div class="alert alert-info"' 
-        + 'role="alert"><strong>Loading User Info</strong> Please wait momentarily</div>';
+        document.getElementById("loader").innerHTML = '<div class="alert alert-info"' + 'role="alert"><strong>Loading User Info</strong> Please wait momentarily</div>';
 
         sid = document.getElementById("idform").elements[0].value;
         console.log(sid);
@@ -34,10 +33,11 @@ function submit() {
         }, function(result) {
             document.getElementById("main").innerHTML = "";
             console.log(result);
-            var user = result.response.players[0]; 
+            var user = result.response.players[0];
             if (user !== undefined) {
                 var vState = user.communityvisibilitystate;
 
+                loadFriends(sid);
                 loadProfilePicture(user);
                 loadUserInfo(user);
                 loadProfileInfo(user, vState);
@@ -46,15 +46,27 @@ function submit() {
 
                 document.getElementById("loader").innerHTML = "";
             } else {
-                document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' 
-                + '<strong>User Could Not Be Found</strong> Please input an existing steam user id</div>';
+                document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' + '<strong>User Could Not Be Found</strong> Please input an existing steam user id</div>';
             }
         }).fail(function(result) {
-            document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' 
-            + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
+            document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
         });
 
 
+    });
+}
+
+function loadFriends(sid) {
+    var newUserList = [];
+    $.getJSON(serverHost + "?sid=", {
+        sid: sid,
+        flag: 4
+    }, function(result) {
+        for (var i = 0; i < 6; i++) {
+            newUserList.push(result.friendslist.friends[i].steamid);
+        }
+        playerPreviewList = newUserList;
+        loadUserPreviews();
     });
 }
 
@@ -70,6 +82,7 @@ function loadUserPreviews() {
         sid: sidUrl,
         flag: 1
     }, function(result) {
+        document.getElementById("previewUsers").innerHTML = "";
         console.log(result);
         for (var i = 0; i < result.response.players.length; i++) {
             var picture = result.response.players[i].avatarfull;
@@ -82,11 +95,10 @@ function loadUserPreviews() {
             document.getElementById("idform").elements[0].value = event[0].sid;
             submit();
         });
-    }).fail(function(result){
+    }).fail(function(result) {
         $('#intro').hide();
         $('#all').show();
-        document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' 
-        + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
+        document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
     });
 }
 
@@ -103,52 +115,52 @@ function processTime(timeStamp) {
     var month = months[date.getMonth()];
     var hours = date.getHours();
     var night = "AM";
-    if (hours >= 12) { 
+    if (hours >= 12) {
         night = "PM";
         if (hours !== 12) {
             hours = hours - 12;
-        } 
+        }
     }
     if (hours === 0) {
         hours = 12;
-    } 
+    }
     var day = "0" + date.getDate();
     var minutes = "0" + date.getMinutes();
     return (month + ' ' + day.substr(-2) + ' ' + year + ' at ' + hours + ':' + minutes.substr(-2) + ' ' + night);
 }
 
-function processPlaytime(minutes) { 
-    if (minutes < 60) { 
+function processPlaytime(minutes) {
+    if (minutes < 60) {
         var unit = " minute";
         if (minutes > 1) {
             unit += "s";
-        } 
+        }
         return minutes + unit;
     }
-    var hours = minutes / 60; 
+    var hours = minutes / 60;
     hours = Math.round(hours * 10) / 10;
     if (hours < 24) {
         var unit = " hour";
         if (hours > 1) {
             unit += "s";
-        } 
+        }
         return hours + unit;
     }
-    var days = hours / 24; 
+    var days = hours / 24;
     days = Math.round(days * 10) / 10;
     if (days < 365) {
         var unit = " day";
         if (days > 1) {
             unit += "s";
-        } 
+        }
         return days + unit + " or " + hours + " hours";
     }
-    var years = days / 365; 
+    var years = days / 365;
     years = Math.round(years * 10) / 10;
     var unit = " year";
     if (years > 1) {
         unit += "s";
-    } 
+    }
     return years + unit + " or " + days + " days or " + hours + " hours";
 
 }
@@ -156,7 +168,7 @@ function processPlaytime(minutes) {
 function place(output, element) {
     if (element === undefined) {
         element = "main";
-    } 
+    }
     document.getElementById(element).appendChild(document.createTextNode(output));
     document.getElementById(element).appendChild(document.createElement("br"));
 }
@@ -178,26 +190,22 @@ function loadOnlineState(user) {
         state = "success";
     } else if (pState === 2) {
         output += "Busy";
-    }
-    else if (pState === 3) {
+    } else if (pState === 3) {
         output += "Away";
-    } 
-    else if (pState === 4) {
+    } else if (pState === 4) {
         output += "Snooze";
-    } 
-    else if (pState === 5) {
+    } else if (pState === 5) {
         output += "Looking to trade";
-    } 
-    else if (pState === 5) {
+    } else if (pState === 5) {
         output += "Looking to play";
-    } 
+    }
     document.getElementById("userInfo").innerHTML += "<h3><span class='label label-" + state + "'>" + output + "</span><br></h3>"
 
     if (pState === 0) {
         place("Last online: " + processTime(user.lastlogoff), "userInfo");
     } else {
-        if (user.gameextrainfo) { 
-            place("Currently playing : " + user.gameextrainfo, "userInfo"); 
+        if (user.gameextrainfo) {
+            place("Currently playing : " + user.gameextrainfo, "userInfo");
         } else {
             place("Not currently in game", "userInfo");
         }
@@ -207,7 +215,7 @@ function loadOnlineState(user) {
 function loadRealNameandLocation(user) {
     if (user.realname) {
         place("Real name : " + user.realname, "userInfo");
-    } 
+    }
     var country = user.loccountrycode;
     var state = user.locstatecode;
     var city = user.loccityid;
@@ -222,7 +230,7 @@ function loadRealNameandLocation(user) {
                 state = state.name + ","
             } else {
                 state = "";
-            } 
+            }
             if (city) {
                 city = city.name + ","
             } else {
@@ -237,7 +245,7 @@ function loadRealNameandLocation(user) {
 }
 
 function loadUserInfo(user) {
-    var name = document.createElement("h3") 
+    var name = document.createElement("h3")
     name.appendChild(document.createTextNode(user.personaname));
     document.getElementById("userInfo").appendChild(name);
     loadOnlineState(user);

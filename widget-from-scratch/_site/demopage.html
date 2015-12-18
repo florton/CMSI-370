@@ -63,10 +63,9 @@
     <script src="dragAndDrop.js"></script>
     
     <script>
-    $("box1")
-    $("#boxes").children().dragAndDrop($("#dropZone"), function(droppedBox) {
-        document.body.style.backgroundColor = droppedBox.css( "backgroundColor" );
-    });
+        $("#boxes").children().dragAndDrop($("#dropZone"), function(droppedBox) {
+            document.body.style.backgroundColor = droppedBox.css( "backgroundColor" );
+        });
     </script>
     
 

@@ -14,7 +14,7 @@
 
     var unbindObject = function(event) {
         dragImage.remove();
-        $("body").unbind("mousemove", moveObject);
+        $("html").unbind("mousemove", moveObject);
         selectedBox = null;
     };
 
@@ -23,13 +23,12 @@
         dragImage = $(event.target).clone();
         dragImage.width($(event.target).width());
         dragImage.height($(event.target).height());
-        
-        $("body").append(dragImage);
+        $("html").append(dragImage);
         dragImage.offset({
             left: event.pageX - dragImage.width() / 2,
             top: event.pageY - dragImage.height() / 2
         });
-        $("body").mousemove(moveObject);
+        $("html").mousemove(moveObject);
     };
 
     var dropImage = function(event) {
@@ -52,7 +51,7 @@
         callback = targets.pop();
         makeUnselectable($(this));
         this.mousedown(createImage);
-        $("body").mouseup(dropImage);
+        $("html").mouseup(dropImage);
     };
 
     var makeUnselectable = function(target) {
@@ -66,7 +65,6 @@
             .css('-webkit-user-select', 'none')
             .css('-moz-user-select', 'none')
             .css('-ms-user-select', 'none');
-            
     };
 
 }(jQuery));

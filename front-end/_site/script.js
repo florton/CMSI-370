@@ -9,7 +9,8 @@ $("#idform").submit(function(e) {
     submit();
 });
 
-var playerPreviewList = ["76561198025207102", "76561197967853593", "76561198023545004", "76561198028934613", "76561197984820423", "76561198056146892"];
+var playerPreviewList = ["76561198025207102", "76561197967853593", "76561198023545004",
+ "76561198028934613", "76561197984820423", "76561198056146892"];
 
 function submit() {
     $('#all').show();
@@ -22,7 +23,8 @@ function submit() {
         document.getElementById("gameStats").innerHTML = "";
         document.getElementById("recentGames").innerHTML = "";
 
-        document.getElementById("loader").innerHTML = '<div class="alert alert-info"' + 'role="alert"><strong>Loading User Info</strong> Please wait momentarily</div>';
+        document.getElementById("loader").innerHTML = '<div class="alert alert-info"' 
+        + 'role="alert"><strong>Loading User Info</strong> Please wait momentarily</div>';
 
         sid = document.getElementById("idform").elements[0].value;
         console.log(sid);
@@ -46,10 +48,12 @@ function submit() {
 
                 document.getElementById("loader").innerHTML = "";
             } else {
-                document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' + '<strong>User Could Not Be Found</strong> Please input an existing steam user id</div>';
+                document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' 
+                + '<strong>User Could Not Be Found</strong> Please input an existing steam user id</div>';
             }
         }).fail(function(result) {
-            document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
+            document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' 
+            + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
         });
 
 
@@ -107,7 +111,8 @@ function loadUserPreviews() {
     }).fail(function(result) {
         $('#intro').hide();
         $('#all').show();
-        document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
+        document.getElementById("loader").innerHTML = '<div class="alert alert-danger" role="alert">' 
+        + '<strong>Could Not Contact Server</strong> Please try again later =/</div>';
     });
 }
 
@@ -208,7 +213,8 @@ function loadOnlineState(user) {
     } else if (pState === 5) {
         output += "Looking to play";
     }
-    document.getElementById("userInfo").innerHTML += "<h3><span class='label label-" + state + "'>" + output + "</span><br></h3>"
+    document.getElementById("userInfo").innerHTML += "<h3><span class='label label-" 
+    + state + "'>" + output + "</span><br></h3>"
 
     if (pState === 0) {
         place("Last online: " + processTime(user.lastlogoff), "userInfo");
@@ -230,7 +236,8 @@ function loadRealNameandLocation(user) {
     var city = user.loccityid;
 
 
-    $.getJSON("https://raw.githubusercontent.com/Holek/steam-friends-countries/master/data/steam_countries.json", function(result) {
+    $.getJSON("https://raw.githubusercontent.com/Holek/steam-friends-countries/master/data/steam_countries.json",
+    function(result) {
         if (country) {
             country = result[country];
             state = country.states[state];
@@ -312,7 +319,8 @@ function loadGameplayStats(user, vState) {
                 var averagePlaytime = totalPlaytime / playedGames;
                 averagePlaytime = Math.round(averagePlaytime * 10) / 10;
                 place("Total time in-game : " + processPlaytime(totalPlaytime), "gameStats");
-                place("Played : " + totalPlayedPercent + "% of owned games (" + playedGames + '/' + userGames.game_count + ')', "gameStats");
+                place("Played : " + totalPlayedPercent + "% of owned games (" 
+                + playedGames + '/' + userGames.game_count + ')', "gameStats");
                 place("Average playtime per game : " + processPlaytime(averagePlaytime), "gameStats");
                 place('', "gameStats");
             } else {
@@ -343,7 +351,8 @@ function loadRecentGames(user) {
                 if (games[i].name === undefined) {
                     continue;
                 }
-                var src = "http://media.steampowered.com/steamcommunity/public/images/apps/" + games[i].appid + "/" + games[i].img_logo_url + ".jpg";
+                var src = "http://media.steampowered.com/steamcommunity/public/images/apps/" 
+                + games[i].appid + "/" + games[i].img_logo_url + ".jpg";
                 var name = document.createElement("h4")
                 name.appendChild(document.createTextNode(games[i].name));
                 document.getElementById("recentGames").appendChild(name)

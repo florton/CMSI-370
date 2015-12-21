@@ -7,8 +7,8 @@
 
     var moveObject = function(event) {
         dragImage.offset({
-            left: event.pageX - dragImage.width()/2,
-            top: event.pageY - dragImage.height()/2
+            left: event.pageX - dragImage.width() / 2,
+            top: event.pageY - dragImage.height() / 2
         });
     };
 

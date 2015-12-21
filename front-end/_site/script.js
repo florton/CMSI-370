@@ -10,7 +10,7 @@ $("#idform").submit(function(e) {
 });
 
 var playerPreviewList = ["76561198025207102", "76561197967853593", "76561198023545004",
- "76561198028934613", "76561197984820423", "76561198056146892"];
+    "76561198028934613", "76561197984820423", "76561198056146892"];
 
 function submit() {
     $('#all').show();
@@ -237,27 +237,27 @@ function loadRealNameandLocation(user) {
 
 
     $.getJSON("https://raw.githubusercontent.com/Holek/steam-friends-countries/master/data/steam_countries.json",
-    function(result) {
-        if (country) {
-            country = result[country];
-            state = country.states[state];
-            city = state.cities[city];
-            if (state) {
-                state = state.name + ","
-            } else {
-                state = "";
+        function(result) {
+            if (country) {
+                country = result[country];
+                state = country.states[state];
+                city = state.cities[city];
+                if (state) {
+                    state = state.name + ","
+                } else {
+                    state = "";
+                }
+                if (city) {
+                    city = city.name + ","
+                } else {
+                    city = "";
+                }
+                place("Lives in : " + city + " " + state + " " + country.name, "userInfo");
             }
-            if (city) {
-                city = city.name + ","
-            } else {
-                city = "";
+            if (user.steamid === "76561198023545004") {
+                document.getElementById("userInfo").innerHTML += "<mark>★ ☆ Creator of this webapp!☆ ★ </mark>";
             }
-            place("Lives in : " + city + " " + state + " " + country.name, "userInfo");
-        }
-        if (user.steamid === "76561198023545004") {
-            document.getElementById("userInfo").innerHTML += "<mark>★ ☆ Creator of this webapp!☆ ★ </mark>";
-        }
-    });
+        });
 }
 
 function loadUserInfo(user) {
@@ -319,8 +319,8 @@ function loadGameplayStats(user, vState) {
                 var averagePlaytime = totalPlaytime / playedGames;
                 averagePlaytime = Math.round(averagePlaytime * 10) / 10;
                 place("Total time in-game : " + processPlaytime(totalPlaytime), "gameStats");
-                place("Played : " + totalPlayedPercent + "% of owned games (" 
-                + playedGames + '/' + userGames.game_count + ')', "gameStats");
+                place("Played : " + totalPlayedPercent + "% of owned games (" + playedGames + '/' 
+                + userGames.game_count + ')', "gameStats");
                 place("Average playtime per game : " + processPlaytime(averagePlaytime), "gameStats");
                 place('', "gameStats");
             } else {

@@ -27,7 +27,7 @@ function proxy() {
                 url += GetOwnedGames + sid + "&include_played_free_games=1";
             } else if (flag === '3') {
                 url += RecentlyPlayedGames + sid;
-            }else if (flag === '4') {
+            } else if (flag === '4') {
                 url += GetUserFriends + sid;
             }
             console.log(res);

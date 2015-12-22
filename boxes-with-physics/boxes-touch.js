@@ -1,4 +1,4 @@
-(function($) {
+(function($) { // JD: 3
     /**
      * Tracks a box as it is rubberbanded or moved across the drawing area.
      */
@@ -14,13 +14,13 @@
                 touch.target.leftPos = touch.pageX - touch.target.deltaX
                 touch.target.topPos = touch.pageY - touch.target.deltaY
 
-                if (touch.target.leftPos >= window.windowWidth - 20) {
+                if (touch.target.leftPos >= window.windowWidth - 20) { // JD: 4
                     touch.target.leftPos = window.windowWidth - 20;
                 }
-                if (touch.target.leftPos < 0) {
+                if (touch.target.leftPos < 0) { // JD: 5
                     touch.target.leftPos = 0;
                 }
-                if (touch.target.topPos >= window.windowHeight - 20) {
+                if (touch.target.topPos >= window.windowHeight - 20) { // JD: 6
                     touch.target.topPos = window.windowHeight - 20;
                 }
                 if (touch.target.topPos < 0) {
@@ -46,6 +46,7 @@
             if (touch.target.movingBox) {
 
                 touch.target.movingBox.flick = true;
+                // JD: 7
                 touch.target.movingBox.xVelocity = touch.target.leftPos - touch.target.leftPosOld;
                 touch.target.movingBox.yVelocity = touch.target.topPos - touch.target.topPosOld;
 
@@ -59,6 +60,7 @@
             var target = box.context.movingBox;
 
             target.offset({
+                // JD: 10
                 left: target.offset().left + target.xVelocity - target.gravityX,
                 top: target.offset().top + target.yVelocity + target.gravityY
             });
@@ -85,17 +87,18 @@
             if ($(this).context.movingBox !== undefined) {
                 var target = $(this).context.movingBox;
 
+                // JD: 11
                 if (target.offset().left < window.windowWidth - 20 && event.accelerationIncludingGravity.x < 0) {
                     target.gravityX = event.accelerationIncludingGravity.x;
                 } else if (target.offset().left > 0 && event.accelerationIncludingGravity.x > 0) {
-                    target.gravityX = event.accelerationIncludingGravity.x;
+                    target.gravityX = event.accelerationIncludingGravity.x; // JD: 8
                 } else {
                     target.gravityX = 0;
                 }
                 if (target.offset().top < window.windowHeight - 20 && event.accelerationIncludingGravity.y > 0) {
                     target.gravityY = event.accelerationIncludingGravity.y;
                 } else if (target.offset().top > 0 && event.accelerationIncludingGravity.y < 0) {
-                    target.gravityY = event.accelerationIncludingGravity.y;
+                    target.gravityY = event.accelerationIncludingGravity.y; // JD: 8
                 } else {
                     target.gravityY = 0;
                 }
@@ -110,6 +113,7 @@
         if (box.context.movingBox !== undefined && box.context.movingBox.flick === true) {
             var target = box.context.movingBox;
 
+            // JD: 12
             if (target.xVelocity !== 0) {
                 target.xVelocity = (target.xVelocity > 0) ? target.xVelocity - 1 : target.xVelocity + 1;
             }
@@ -177,8 +181,10 @@
         window.oldTimestamp = 0;
         window.requestAnimationFrame(animateBoxes);
 
+        // JD: 13
         window.windowHeight = (window.innerHeight > 0) ? window.innerHeight - 35 : screen.height - 35;
         window.windowWidth = (window.innerWidth > 0) ? window.innerWidth - 15 : screen.width - 15;
+        // JD: 9
         document.getElementById("windowBorder").style.width = window.windowWidth + "px";
         document.getElementById("windowBorder").style.height = window.windowHeight + "px";
         document.getElementById("windowBorder").style.border = "thin solid black";

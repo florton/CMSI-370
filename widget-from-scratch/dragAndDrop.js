@@ -62,9 +62,9 @@
             .on('dragstart', function() {
                 return false;
             })
-            .css('-webkit-user-select', 'none')
+            .css('-webkit-user-select', 'none') // JD: 4
             .css('-moz-user-select', 'none')
             .css('-ms-user-select', 'none');
     };
 
-}(jQuery));
+}(jQuery)); // JD: 3
